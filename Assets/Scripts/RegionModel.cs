@@ -20,6 +20,7 @@ public class RegionModel
     // PRIVATE VARS
     private TerrainType[,] MapData_Terrain;
 
+
     // PUBLIC METHODS
     public RegionModel(int width, int height) { 
         Width = width; 
