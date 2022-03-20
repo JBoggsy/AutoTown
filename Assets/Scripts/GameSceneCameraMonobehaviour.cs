@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainCameraMonobehaviour : MonoBehaviour
+public class GameSceneCameraMonobehaviour : MonoBehaviour
 {
     [Header("Config")]
     public float PanSpeed;
