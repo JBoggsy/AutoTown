@@ -43,4 +43,9 @@ public class RegionModel
             }
         }
     }
+
+    public TerrainType GetTerrainAt(int y, int x)
+    {
+        return MapData_Terrain[y, x];
+    }
 }

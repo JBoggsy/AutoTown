@@ -341,13 +341,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4234e2c27eb9c9489df4892fe8cb781, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tiles:
-  - {fileID: 11400000, guid: cd8cc1597ca2bb94491eb0e63117a176, type: 2}
-  - {fileID: 11400000, guid: b2f3f27b29c750b4f833d3b77d4b6b67, type: 2}
-  - {fileID: 11400000, guid: c245acc2f8fcaf74ebe014f09df52487, type: 2}
-  - {fileID: 11400000, guid: 3c72a4618e73f434ab99e13490d88c5d, type: 2}
-  - {fileID: 11400000, guid: d48b99776396fdd4b81cb73cd1e25bb4, type: 2}
-  - {fileID: 11400000, guid: 3b2918ec43a5d8d408d1f4d997e48bb7, type: 2}
+  GrassTile: {fileID: 11400000, guid: b2f3f27b29c750b4f833d3b77d4b6b67, type: 2}
+  DirtTile: {fileID: 11400000, guid: cd8cc1597ca2bb94491eb0e63117a176, type: 2}
+  RockTile: {fileID: 11400000, guid: 3c72a4618e73f434ab99e13490d88c5d, type: 2}
+  IceTile: {fileID: 11400000, guid: c245acc2f8fcaf74ebe014f09df52487, type: 2}
+  WaterShallowTile: {fileID: 11400000, guid: 3b2918ec43a5d8d408d1f4d997e48bb7, type: 2}
+  WaterDeepTile: {fileID: 11400000, guid: d48b99776396fdd4b81cb73cd1e25bb4, type: 2}
 --- !u!1 &1045126723
 GameObject:
   m_ObjectHideFlags: 0
