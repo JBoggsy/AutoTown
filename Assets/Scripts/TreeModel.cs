@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class TreeModel : IResourceDeposit
+public class TreeModel : IResourceDepositModel
 {
     // PUBLIC VARS
-    public RegionModel.ResourceDepositType Type { get; protected set; }
+    public ResourceDepositType Type { get; protected set; }
     public int AmountRemaining { get; protected set; }
     public Vector3Int Position { get; protected set; }
     public TreeMonobehaviour Monobehaviour { protected get; set; }
@@ -12,7 +12,7 @@ public class TreeModel : IResourceDeposit
     // PUBLIC METHODS
     public TreeModel(int amount, int x, int y)
     {
-        Type = RegionModel.ResourceDepositType.Tree;
+        Type = ResourceDepositType.Tree;
         AmountRemaining = amount;
         Position = new Vector3Int(x, y, 0);
     }

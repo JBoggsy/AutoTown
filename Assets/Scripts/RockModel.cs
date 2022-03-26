@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public class RockModel : IResourceDeposit
+public class RockModel : IResourceDepositModel
 {
     // PUBLIC VARS
-    public RegionModel.ResourceDepositType Type { get; protected set; }
+    public ResourceDepositType Type { get; protected set; }
     public int AmountRemaining { get; protected set; }
     public Vector3Int Position { get; protected set; }
     public RockMonobehaviour Monobehaviour { protected get; set; }
@@ -11,7 +11,7 @@ public class RockModel : IResourceDeposit
     // PUBLIC METHODS
     public RockModel(int amount, int x, int y)
     {
-        Type = RegionModel.ResourceDepositType.Rock;
+        Type = ResourceDepositType.Rock;
         AmountRemaining = amount;
         Position = new Vector3Int(x, y, 0);
     }

@@ -39,22 +39,22 @@ public class TerrainTilemapMonobehaviour : MonoBehaviour
                 tile_coordinate = new Vector3Int(x, y, 0);
                 switch (Region.GetTerrainAt(y, x))
                 {
-                    case RegionModel.TerrainType.Grass:
+                    case TerrainType.Grass:
                         TilemapGameObject.SetTile(tile_coordinate, GrassTile);
                         break;
-                    case RegionModel.TerrainType.Dirt:
+                    case TerrainType.Dirt:
                         TilemapGameObject.SetTile(tile_coordinate, DirtTile);
                         break;
-                    case RegionModel.TerrainType.Rock:
+                    case TerrainType.Rock:
                         TilemapGameObject.SetTile(tile_coordinate, RockTile);
                         break;
-                    case RegionModel.TerrainType.Ice:
+                    case TerrainType.Ice:
                         TilemapGameObject.SetTile(tile_coordinate, IceTile);
                         break;
-                    case RegionModel.TerrainType.Water_Shallow:
+                    case TerrainType.Water_Shallow:
                         TilemapGameObject.SetTile(tile_coordinate, WaterShallowTile);
                         break;
-                    case RegionModel.TerrainType.Water_Deep:
+                    case TerrainType.Water_Deep:
                         TilemapGameObject.SetTile(tile_coordinate, WaterDeepTile);
                         break;
                 }

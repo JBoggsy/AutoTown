@@ -20,18 +20,18 @@ public class TownSceneManager : MonoBehaviour
         Region = new RegionModel(20, 20);
     }
 
-    public void SpawnResourceDeposit(IResourceDeposit deposit, int ID)
+    public void SpawnResourceDeposit(IResourceDepositModel deposit, int ID)
     {
         GameObject newResourceDepositGameObject;
         switch (deposit.Type)
         {
-            case RegionModel.ResourceDepositType.Tree:
+            case ResourceDepositType.Tree:
                 newResourceDepositGameObject = GameObject.Instantiate(TreePrefab);
                 ResourceDepositGameObjectsMap.Add(ID, newResourceDepositGameObject);
                 newResourceDepositGameObject.GetComponent<Transform>().SetPositionAndRotation(deposit.Position, new Quaternion(0, 0, 0, 0));
                 newResourceDepositGameObject.GetComponent<TreeMonobehaviour>().SetModel((TreeModel)deposit);
                 break;
-            case RegionModel.ResourceDepositType.Rock:
+            case ResourceDepositType.Rock:
                 newResourceDepositGameObject = GameObject.Instantiate(RockPrefab);
                 ResourceDepositGameObjectsMap.Add(ID, newResourceDepositGameObject);
                 newResourceDepositGameObject.GetComponent<Transform>().SetPositionAndRotation(deposit.Position, new Quaternion(0, 0, 0, 0));
