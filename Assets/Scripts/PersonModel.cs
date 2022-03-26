@@ -17,4 +17,10 @@ public class PersonModel : IWorldEntityModel
         Position = new Vector3Int(x, y, 0);
         Inventory = new Inventory(20);
     }
+
+    public bool Move(Vector3Int movement)
+    {
+        Position = Position + movement;
+        return true;
+    }
 }
