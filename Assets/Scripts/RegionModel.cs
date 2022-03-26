@@ -4,22 +4,6 @@ using UnityEngine;
 
 public class RegionModel
 {
-    public enum TerrainType
-    {
-        Dirt,
-        Grass,
-        Rock,
-        Water_Shallow,
-        Water_Deep,
-        Ice
-    }
-
-    public enum ResourceDepositType
-    {
-        Tree,
-        Rock
-    }
-
     // PUBLIC VARS
     public int Height { get; private set; }
     public int Width { get; private set; }
@@ -30,7 +14,7 @@ public class RegionModel
     private TerrainType[,] MapData_Terrain;
 
     private int NextResourceDepositID = 0;
-    private Dictionary<int, IResourceDeposit> ResourceDepositMap = new Dictionary<int, IResourceDeposit>();
+    private Dictionary<int, IResourceDepositModel> ResourceDepositMap = new Dictionary<int, IResourceDepositModel>();
 
 
     // PUBLIC METHODS
@@ -62,9 +46,9 @@ public class RegionModel
     }
 
 
-    public IResourceDeposit CreateResourceDeposit(int amount, Vector3Int Position, ResourceDepositType type)
+    public IResourceDepositModel CreateResourceDeposit(int amount, Vector3Int Position, ResourceDepositType type)
     {
-        IResourceDeposit newResourceDeposit;
+        IResourceDepositModel newResourceDeposit;
         switch (type)
         {
             case ResourceDepositType.Tree:

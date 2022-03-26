@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PersonModel : IWorldEntity
+public class PersonModel : IWorldEntityModel
 {
     // PUBLIC VARS
     public Vector3Int Position { get; protected set; }
