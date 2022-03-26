@@ -39,4 +39,16 @@ public class TownSceneManager : MonoBehaviour
                 break;
         }
     }
+
+    public void OnMouseDown(WorldEntityMonoBehaviour entity)
+    {
+        if (entity is RockMonobehaviour rock)
+        {
+            Debug.Log("You clicked on a rock");
+        }
+        else if (entity is TreeMonobehaviour tree)
+        {
+            Debug.Log("You clicked on a tree");
+        }
+    }
 }
