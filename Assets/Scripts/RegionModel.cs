@@ -15,6 +15,8 @@ public class RegionModel
 
     private int NextResourceDepositID = 0;
     private Dictionary<int, IResourceDepositModel> ResourceDepositMap = new Dictionary<int, IResourceDepositModel>();
+    private int NextPersonID = 0;
+    private Dictionary<int, PersonModel> PersonMap = new Dictionary<int,PersonModel>();
 
 
     // PUBLIC METHODS
@@ -43,19 +45,28 @@ public class RegionModel
         }
         CreateResourceDeposit(500, new Vector3Int(11, 11, 0), ResourceDepositType.Tree);
         CreateResourceDeposit(500, new Vector3Int(10, 10, 0), ResourceDepositType.Rock);
+        CreatePerson(new Vector3Int(7, 7, 0));
     }
 
+    public PersonModel CreatePerson(Vector3Int position)
+    {
+        PersonModel newPerson = new PersonModel(position.x, position.y);
+        PersonMap.Add(NextPersonID, newPerson);
+        Manager.SpawnPerson(newPerson, NextPersonID);
+        NextPersonID++;
+        return newPerson;
+    }
 
-    public IResourceDepositModel CreateResourceDeposit(int amount, Vector3Int Position, ResourceDepositType type)
+    public IResourceDepositModel CreateResourceDeposit(int amount, Vector3Int position, ResourceDepositType type)
     {
         IResourceDepositModel newResourceDeposit;
         switch (type)
         {
             case ResourceDepositType.Tree:
-                newResourceDeposit = new TreeModel(amount, Position.x, Position.y);
+                newResourceDeposit = new TreeModel(amount, position.x, position.y);
                 break;
             case ResourceDepositType.Rock:
-                newResourceDeposit = new RockModel(amount, Position.x, Position.y);
+                newResourceDeposit = new RockModel(amount, position.x, position.y);
                 break;
             default:
                 return null;

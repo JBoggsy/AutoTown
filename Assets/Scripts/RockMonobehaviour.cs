@@ -14,7 +14,7 @@ public class RockMonobehaviour : WorldEntityMonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        transform.position = Model.Position;
     }
 
     public void SetModel(RockModel model)

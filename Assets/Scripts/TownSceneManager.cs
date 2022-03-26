@@ -8,11 +8,13 @@ public class TownSceneManager : MonoBehaviour
 
     public GameObject TreePrefab;
     public GameObject RockPrefab;
+    public GameObject PersonPrefab;
 
     public TownUIManager TownUIManager;
 
     // PRIVATE VARS
-    private Dictionary <int, GameObject> ResourceDepositGameObjectsMap = new Dictionary <int, GameObject>();
+    private Dictionary<int, GameObject> ResourceDepositGameObjectsMap = new Dictionary<int, GameObject>();
+    private Dictionary<int, GameObject> PersonGameObjectsMap = new Dictionary<int, GameObject>();
 
     // PUBLIC METHODS
 
@@ -20,6 +22,13 @@ public class TownSceneManager : MonoBehaviour
     {
         Instance = this;
         Region = new RegionModel(20, 20);
+    }
+
+    public void SpawnPerson(PersonModel person, int ID)
+    {
+        GameObject newPersonGameObject = GameObject.Instantiate(PersonPrefab);
+        PersonGameObjectsMap.Add(ID, newPersonGameObject);
+        newPersonGameObject.GetComponent<PersonMonobehaviour>().SetModel(person);
     }
 
     public void SpawnResourceDeposit(IResourceDepositModel deposit, int ID)
@@ -30,13 +39,11 @@ public class TownSceneManager : MonoBehaviour
             case ResourceDepositType.Tree:
                 newResourceDepositGameObject = GameObject.Instantiate(TreePrefab);
                 ResourceDepositGameObjectsMap.Add(ID, newResourceDepositGameObject);
-                newResourceDepositGameObject.GetComponent<Transform>().SetPositionAndRotation(deposit.Position, new Quaternion(0, 0, 0, 0));
                 newResourceDepositGameObject.GetComponent<TreeMonobehaviour>().SetModel((TreeModel)deposit);
                 break;
             case ResourceDepositType.Rock:
                 newResourceDepositGameObject = GameObject.Instantiate(RockPrefab);
                 ResourceDepositGameObjectsMap.Add(ID, newResourceDepositGameObject);
-                newResourceDepositGameObject.GetComponent<Transform>().SetPositionAndRotation(deposit.Position, new Quaternion(0, 0, 0, 0));
                 newResourceDepositGameObject.GetComponent<RockMonobehaviour>().SetModel((RockModel)deposit);
                 break;
         }
