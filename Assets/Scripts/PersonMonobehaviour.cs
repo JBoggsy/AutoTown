@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RockMonobehaviour : WorldEntityMonoBehaviour
+public class PersonMonobehaviour : MonoBehaviour
 {
-    public RockModel Model { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
@@ -15,11 +14,5 @@ public class RockMonobehaviour : WorldEntityMonoBehaviour
     void Update()
     {
         
-    }
-
-    public void SetModel(RockModel model)
-    { 
-        Model = model; 
-        Model.Monobehaviour = this;
     }
 }
