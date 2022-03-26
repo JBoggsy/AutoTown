@@ -8,6 +8,14 @@ public class TownSceneCameraMonobehaviour : MonoBehaviour
     public float PanSpeed;
     public float ZoomSpeed;
 
+    public void Start()
+    {
+        float x = TownSceneManager.Instance.Region.Width / 2f + 0.5f;
+        float y = TownSceneManager.Instance.Region.Height / 2f + 0.5f;
+
+        gameObject.transform.position = new Vector3(x, y, -1);
+    }
+
     public void Update()
     {
         float distance = GetComponent<Camera>().orthographicSize * PanSpeed * Time.deltaTime;

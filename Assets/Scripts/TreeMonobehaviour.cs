@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TreeMonobehaviour : MonoBehaviour
+public class TreeMonobehaviour : WorldEntityMonoBehaviour
 {
     public TreeModel Model { get; private set; }
     // Start is called before the first frame update

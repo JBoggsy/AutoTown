@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RockMonobehaviour : MonoBehaviour
+public class RockMonobehaviour : WorldEntityMonoBehaviour
 {
     public RockModel Model { get; private set; }
     // Start is called before the first frame update
