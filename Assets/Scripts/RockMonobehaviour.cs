@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RockMonobehaviour : MonoBehaviour
 {
+    public RockModel Model { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +15,11 @@ public class RockMonobehaviour : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetModel(RockModel model)
+    { 
+        Model = model; 
+        Model.SetMonobehaviour(this);
     }
 }

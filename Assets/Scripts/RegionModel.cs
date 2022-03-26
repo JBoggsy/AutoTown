@@ -57,7 +57,8 @@ public class RegionModel
                 }
             }
         }
-        CreateResourceDeposit(500, new Vector3Int(25, 25, 0), ResourceDepositType.Tree);
+        CreateResourceDeposit(500, new Vector3Int(11, 11, 0), ResourceDepositType.Tree);
+        CreateResourceDeposit(500, new Vector3Int(10, 10, 0), ResourceDepositType.Rock);
     }
 
 
@@ -68,6 +69,9 @@ public class RegionModel
         {
             case ResourceDepositType.Tree:
                 newResourceDeposit = new TreeModel(amount, Position.x, Position.y);
+                break;
+            case ResourceDepositType.Rock:
+                newResourceDeposit = new RockModel(amount, Position.x, Position.y);
                 break;
             default:
                 return null;
