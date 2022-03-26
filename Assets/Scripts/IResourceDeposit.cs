@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 
-public interface IResourceDeposit
+public interface IResourceDeposit: IWorldEntity
 {
     public RegionModel.ResourceDepositType Type { get; }
     public int AmountRemaining { get; }
-    public Vector3Int Position { get; }
 
     /**
      * Returns the actual amount retrieved from the deposit, which may be less than the

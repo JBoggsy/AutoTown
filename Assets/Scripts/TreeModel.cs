@@ -1,14 +1,13 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class TreeModel : IResourceDeposit
 {
     // PUBLIC VARS
-    public RegionModel.ResourceDepositType Type { get; private set; }
-    public int AmountRemaining { get; private set; }
-    public Vector3Int Position { get; private set; }
-
+    public RegionModel.ResourceDepositType Type { get; protected set; }
+    public int AmountRemaining { get; protected set; }
+    public Vector3Int Position { get; protected set; }
+    public TreeMonobehaviour Monobehaviour { protected get; set; }
     // PRIVATE VARS
-    private TreeMonobehaviour Monobehaviour;
 
     // PUBLIC METHODS
     public TreeModel(int amount, int x, int y)
@@ -41,6 +40,4 @@ public class TreeModel : IResourceDeposit
     {
         return;
     }
-
-    public void SetMonobehaviour(TreeMonobehaviour monobehaviour) { Monobehaviour = monobehaviour; }
 }

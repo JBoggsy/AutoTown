@@ -3,12 +3,10 @@
 public class RockModel : IResourceDeposit
 {
     // PUBLIC VARS
-    public RegionModel.ResourceDepositType Type { get; private set; }
-    public int AmountRemaining { get; private set; }
-    public Vector3Int Position { get; private set; }
-
-    // PRIVATE VARS
-    private RockMonobehaviour Monobehaviour;
+    public RegionModel.ResourceDepositType Type { get; protected set; }
+    public int AmountRemaining { get; protected set; }
+    public Vector3Int Position { get; protected set; }
+    public RockMonobehaviour Monobehaviour { protected get; set; }
 
     // PUBLIC METHODS
     public RockModel(int amount, int x, int y)
@@ -41,6 +39,4 @@ public class RockModel : IResourceDeposit
     {
         return;
     }
-
-    public void SetMonobehaviour(RockMonobehaviour monobehaviour) { Monobehaviour = monobehaviour; }
 }

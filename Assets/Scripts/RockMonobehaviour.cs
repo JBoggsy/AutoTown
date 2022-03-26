@@ -20,6 +20,6 @@ public class RockMonobehaviour : MonoBehaviour
     public void SetModel(RockModel model)
     { 
         Model = model; 
-        Model.SetMonobehaviour(this);
+        Model.Monobehaviour = this;
     }
 }

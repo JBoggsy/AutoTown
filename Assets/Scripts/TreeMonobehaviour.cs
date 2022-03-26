@@ -20,6 +20,6 @@ public class TreeMonobehaviour : MonoBehaviour
     public void SetModel(TreeModel model)
     { 
         Model = model; 
-        Model.SetMonobehaviour(this);
+        Model.Monobehaviour = this;
     }
 }
