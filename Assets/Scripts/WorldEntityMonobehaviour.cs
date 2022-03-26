@@ -9,7 +9,6 @@ public abstract class WorldEntityMonoBehaviour : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            TownSceneManager.Instance.OnMouseDown(this);
         }
     }
 }
