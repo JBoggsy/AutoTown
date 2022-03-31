@@ -24,6 +24,24 @@ public class PersonModel : IWorldEntity
 
     public void Simulate ()
     {
-        
+        if (Position.x == 8)
+        {
+            if (Position.y < 12)
+            {
+                Move(Direction.North);
+            } else
+            {
+                Move(Direction.East);
+            }
+        } else if (Position.x == 9)
+        {
+            if (Position.y > 8)
+            {
+                Move(Direction.South);
+            } else
+            {
+                Move(Direction.West);
+            }
+        }
     }
 }

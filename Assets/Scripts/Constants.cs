@@ -1,4 +1,6 @@
-﻿public enum TerrainType
+﻿using UnityEngine;
+
+public enum TerrainType
 {
     Dirt,
     Grass,
@@ -22,4 +24,12 @@ public enum ItemType
 {
     Wood,
     Stone
+}
+
+public static class Direction
+{
+    public static readonly Vector3Int North = new Vector3Int(0, 1, 0);
+    public static readonly Vector3Int South = new Vector3Int(0, -1, 0);
+    public static readonly Vector3Int East = new Vector3Int(1, 0, 0);
+    public static readonly Vector3Int West = new Vector3Int(-1, 0, 0);
 }

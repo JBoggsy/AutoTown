@@ -76,7 +76,7 @@ public class RegionModel
         }
         CreateResourceDeposit(500, new Vector3Int(11, 11, 0), ResourceDepositType.Tree);
         CreateResourceDeposit(500, new Vector3Int(10, 10, 0), ResourceDepositType.Rock);
-        CreatePerson(new Vector3Int(7, 7, 0));
+        CreatePerson(new Vector3Int(8, 8, 0));
     }
 
     // ENTITY CREATION METHODS

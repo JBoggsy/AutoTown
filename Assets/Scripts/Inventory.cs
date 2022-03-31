@@ -37,4 +37,8 @@ public class Inventory
         AmountHeld--;
         return true;
     }
+
+    public bool IsEmpty() { return AmountHeld == 0; }
+    public bool IsFull() { return AmountHeld == Capacity; }
+    public bool ContainsItemType(ItemType type) { return ItemAmounts.ContainsKey(type); }
 }
