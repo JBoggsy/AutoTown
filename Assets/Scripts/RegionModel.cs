@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -51,6 +52,7 @@ public class RegionModel
     /// <param name="height"></param>
     public RegionModel(int width, int height) {
         manager = TownSceneManager.Instance;
+        runningSimulation = false;
 
         Width = width; 
         Height = height;
@@ -135,5 +137,17 @@ public class RegionModel
     public TerrainType GetTerrainAt(int y, int x)
     {
         return mapData_Terrain[y, x];
+    }
+
+
+    // SIMULATION
+    /////////////
+
+    public void SimulateOneStep ()
+    {
+        foreach (PersonModel person in personMap.Values)
+        {
+            person.Simulate();
+        }
     }
 }

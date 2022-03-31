@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TreeModel : IResourceDepositModel
+public class TreeModel : IResourceDeposit
 {
     // PUBLIC VARS
     public ResourceDepositType Type { get; protected set; }

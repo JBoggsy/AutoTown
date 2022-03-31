@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TownSceneManager : MonoBehaviour
@@ -12,41 +13,25 @@ public class TownSceneManager : MonoBehaviour
 
     public TownUIManager TownUIManager;
 
-    // PRIVATE VARS
+    public float SimulationStepTime = 0.1f;
+
     private Dictionary<int, GameObject> ResourceDepositGameObjectsMap = new Dictionary<int, GameObject>();
     private Dictionary<int, GameObject> PersonGameObjectsMap = new Dictionary<int, GameObject>();
+    
+    private IEnumerator simulationCoroutine;
+    private bool runSimulation = true;
 
-    // PUBLIC METHODS
 
     public void Awake()
     {
         Instance = this;
         Region = new RegionModel(20, 20);
+        simulationCoroutine = Simulate();
     }
 
-    public void SpawnPerson(PersonModel person, int ID)
+    public void Start ()
     {
-        GameObject newPersonGameObject = GameObject.Instantiate(PersonPrefab);
-        PersonGameObjectsMap.Add(ID, newPersonGameObject);
-        newPersonGameObject.GetComponent<PersonMonobehaviour>().SetModel(person);
-    }
-
-    public void SpawnResourceDeposit(IResourceDepositModel deposit, int ID)
-    {
-        GameObject newResourceDepositGameObject;
-        switch (deposit.Type)
-        {
-            case ResourceDepositType.Tree:
-                newResourceDepositGameObject = GameObject.Instantiate(TreePrefab);
-                ResourceDepositGameObjectsMap.Add(ID, newResourceDepositGameObject);
-                newResourceDepositGameObject.GetComponent<TreeMonobehaviour>().SetModel((TreeModel)deposit);
-                break;
-            case ResourceDepositType.Rock:
-                newResourceDepositGameObject = GameObject.Instantiate(RockPrefab);
-                ResourceDepositGameObjectsMap.Add(ID, newResourceDepositGameObject);
-                newResourceDepositGameObject.GetComponent<RockMonobehaviour>().SetModel((RockModel)deposit);
-                break;
-        }
+        StartCoroutine(simulationCoroutine);
     }
 
     public void Update()
@@ -79,6 +64,43 @@ public class TownSceneManager : MonoBehaviour
             {
                 TownUIManager.ClearPopup();
             }
+        }
+    }
+
+    public void SpawnPerson (PersonModel person, int ID)
+    {
+        GameObject newPersonGameObject = GameObject.Instantiate(PersonPrefab);
+        PersonGameObjectsMap.Add(ID, newPersonGameObject);
+        newPersonGameObject.GetComponent<PersonMonobehaviour>().SetModel(person);
+    }
+
+    public void SpawnResourceDeposit (IResourceDeposit deposit, int ID)
+    {
+        GameObject newResourceDepositGameObject;
+        switch (deposit.Type)
+        {
+            case ResourceDepositType.Tree:
+                newResourceDepositGameObject = GameObject.Instantiate(TreePrefab);
+                ResourceDepositGameObjectsMap.Add(ID, newResourceDepositGameObject);
+                newResourceDepositGameObject.GetComponent<TreeMonobehaviour>().SetModel((TreeModel)deposit);
+                break;
+            case ResourceDepositType.Rock:
+                newResourceDepositGameObject = GameObject.Instantiate(RockPrefab);
+                ResourceDepositGameObjectsMap.Add(ID, newResourceDepositGameObject);
+                newResourceDepositGameObject.GetComponent<RockMonobehaviour>().SetModel((RockModel)deposit);
+                break;
+        }
+    }
+
+    private IEnumerator Simulate ()
+    {
+        while (true)
+        {
+            if (runSimulation)
+            {
+                Region.SimulateOneStep();
+            }
+            yield return new WaitForSeconds(SimulationStepTime);
         }
     }
 }

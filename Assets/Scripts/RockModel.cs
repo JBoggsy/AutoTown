@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RockModel : IResourceDepositModel
+public class RockModel : IResourceDeposit
 {
     // PUBLIC VARS
     public ResourceDepositType Type { get; protected set; }

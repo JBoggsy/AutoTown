@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,7 +18,12 @@ public class PersonModel : IWorldEntity
 
     public bool Move(Vector3Int movement)
     {
-        Position = Position + movement;
+        Position += movement;
         return true;
+    }
+
+    public void Simulate ()
+    {
+        
     }
 }
