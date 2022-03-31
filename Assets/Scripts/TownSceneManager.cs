@@ -10,6 +10,8 @@ public class TownSceneManager : MonoBehaviour
     public GameObject RockPrefab;
     public GameObject PersonPrefab;
 
+    public TownUIManager TownUIManager;
+
     // PRIVATE VARS
     private Dictionary<int, GameObject> ResourceDepositGameObjectsMap = new Dictionary<int, GameObject>();
     private Dictionary<int, GameObject> PersonGameObjectsMap = new Dictionary<int, GameObject>();
@@ -47,15 +49,36 @@ public class TownSceneManager : MonoBehaviour
         }
     }
 
-    public void OnMouseDown(WorldEntityMonoBehaviour entity)
+    public void Update()
     {
-        if (entity is RockMonobehaviour rock)
+        if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("You clicked on a rock");
-        }
-        else if (entity is TreeMonobehaviour tree)
-        {
-            Debug.Log("You clicked on a tree");
+            bool clicked_on_object = false;
+
+            GameObject game_object = Util.GetObjectUnderCursor();
+            if (game_object != null)
+            {
+                MonoBehaviour mono_behaviour = game_object.GetComponent<MonoBehaviour>();
+                if (mono_behaviour != null && mono_behaviour is WorldEntityMonoBehaviour)
+                {
+                    clicked_on_object = true;
+                    string label = "";
+                    if (mono_behaviour is TreeMonobehaviour tree)
+                    {
+                        label = "Tree (" + tree.Model.AmountRemaining + ")";
+                    }
+                    if (mono_behaviour is RockMonobehaviour rock)
+                    {
+                        label = "Rock (" + rock.Model.AmountRemaining + ")";
+                    }
+                    TownUIManager.ShowPopup(label, mono_behaviour.transform.position);
+                }
+            }
+
+            if (!clicked_on_object)
+            {
+                TownUIManager.ClearPopup();
+            }
         }
     }
 }
