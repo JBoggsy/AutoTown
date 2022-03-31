@@ -2,30 +2,59 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class RegionModel
 {
-    // PUBLIC VARS
+    /////////////////
+    // PROPERTIES //
+    ///////////////
+
+    // UNITY ACCESSORS
+    //////////////////
+    
+    private TownSceneManager manager;
+
+    // SIMULATION PROPERTIES
+    ////////////////////////
+    
+    private bool runningSimulation;
+
+    // MAP DATA
+    ///////////
+        
     public int Height { get; private set; }
     public int Width { get; private set; }
 
-    // PRIVATE VARS
-    private TownSceneManager Manager;
+    // Terrain layer
+    private TerrainType[,] mapData_Terrain;
 
-    private TerrainType[,] MapData_Terrain;
+    // Resources layer
+    private int nextResourceDepositID = 0;
+    private Dictionary<int, IResourceDeposit> resourceDepositMap = new Dictionary<int, IResourceDeposit>();
 
-    private int NextResourceDepositID = 0;
-    private Dictionary<int, IResourceDepositModel> ResourceDepositMap = new Dictionary<int, IResourceDepositModel>();
-    private int NextPersonID = 0;
-    private Dictionary<int, PersonModel> PersonMap = new Dictionary<int,PersonModel>();
+    // Persons layer
+    private int nextPersonID = 0;
+    private Dictionary<int, PersonModel> personMap = new Dictionary<int,PersonModel>();
 
 
-    // PUBLIC METHODS
+    //////////////
+    // METHODS //
+    ////////////
+
+    // CONSTRUCTOR
+    //////////////
+
+    /// <summary>
+    /// Create a new world region with the given width and height.
+    /// </summary>
+    /// <param name="width"></param>
+    /// <param name="height"></param>
     public RegionModel(int width, int height) {
-        Manager = TownSceneManager.Instance;
+        manager = TownSceneManager.Instance;
 
         Width = width; 
         Height = height;
-        MapData_Terrain = new TerrainType[Height,Width];
+        mapData_Terrain = new TerrainType[Height, Width];
 
         for (int x = 0; x < width; x++)
         {
@@ -35,11 +64,11 @@ public class RegionModel
 
                 if (location.magnitude < 5)
                 {
-                    MapData_Terrain[y, x] = TerrainType.Grass;
+                    mapData_Terrain[y, x] = TerrainType.Grass;
                 }
                 else
                 {
-                    MapData_Terrain[y, x] = TerrainType.Water_Shallow;
+                    mapData_Terrain[y, x] = TerrainType.Water_Shallow;
                 }
             }
         }
@@ -48,18 +77,40 @@ public class RegionModel
         CreatePerson(new Vector3Int(7, 7, 0));
     }
 
+    // ENTITY CREATION METHODS
+    //////////////////////////
+
+    /// <summary>
+    /// Create a new Person entity.
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
     public PersonModel CreatePerson(Vector3Int position)
     {
         PersonModel newPerson = new PersonModel(position.x, position.y);
-        PersonMap.Add(NextPersonID, newPerson);
-        Manager.SpawnPerson(newPerson, NextPersonID);
-        NextPersonID++;
+        personMap.Add(nextPersonID, newPerson);
+        manager.SpawnPerson(newPerson, nextPersonID);
+        nextPersonID++;
         return newPerson;
     }
 
-    public IResourceDepositModel CreateResourceDeposit(int amount, Vector3Int position, ResourceDepositType type)
+    /// <summary>
+    /// Create a new resource deposit entity.
+    /// </summary>
+    /// <details>
+    /// Resource deposits are one of:
+    /// <ul>
+    ///     <li>Rock</li>
+    ///     <li>Tree</li>
+    /// </ul>
+    /// </details>
+    /// <param name="amount">Amount of resources held in the deposit.</param>
+    /// <param name="position">The X,Y coordinate of the deposit (Z should always be 0).</param>
+    /// <param name="type">The type of the deposit.</param>
+    /// <returns></returns>
+    public IResourceDeposit CreateResourceDeposit(int amount, Vector3Int position, ResourceDepositType type)
     {
-        IResourceDepositModel newResourceDeposit;
+        IResourceDeposit newResourceDeposit;
         switch (type)
         {
             case ResourceDepositType.Tree:
@@ -71,14 +122,18 @@ public class RegionModel
             default:
                 return null;
         }
-        ResourceDepositMap.Add(NextResourceDepositID, newResourceDeposit);
-        Manager.SpawnResourceDeposit(newResourceDeposit, NextResourceDepositID);
-        NextResourceDepositID++;
+        resourceDepositMap.Add(nextResourceDepositID, newResourceDeposit);
+        manager.SpawnResourceDeposit(newResourceDeposit, nextResourceDepositID);
+        nextResourceDepositID++;
         return newResourceDeposit;
     }
 
+
+    // STATE RETRIEVAL METHODS
+    //////////////////////////
+
     public TerrainType GetTerrainAt(int y, int x)
     {
-        return MapData_Terrain[y, x];
+        return mapData_Terrain[y, x];
     }
 }
