@@ -26,6 +26,11 @@ public enum ItemType
     Stone
 }
 
+public enum BuildingType
+{
+    Town_Center
+}
+
 public static class Direction
 {
     public static readonly Vector3Int North = new Vector3Int(0, 1, 0);

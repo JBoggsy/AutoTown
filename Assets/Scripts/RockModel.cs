@@ -2,11 +2,12 @@
 
 public class RockModel : IResourceDeposit
 {
-    // PUBLIC VARS
+    public RockMonobehaviour Monobehaviour { protected get; set; }
+
+    public Vector3Int Position { get; protected set; }
+
     public ResourceDepositType Type { get; protected set; }
     public int AmountRemaining { get; protected set; }
-    public Vector3Int Position { get; protected set; }
-    public RockMonobehaviour Monobehaviour { protected get; set; }
 
     // PUBLIC METHODS
     public RockModel(int amount, int x, int y)

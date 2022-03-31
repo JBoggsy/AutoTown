@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PersonModel : IWorldEntity
+public class PersonModel : IWorldEntity, IInventory
 {
-    public Vector3Int Position { get; protected set; }
     public PersonMonobehaviour Monobehaviour { protected get; set; }
 
+    public Vector3Int Position { get; protected set; }
+
+    public string FirstName { get; protected set; }
+    public string LastName { get; protected set; }
+    public int Health { get; protected set; }
+    public int Hunger { get; protected set; }
+    public int Water { get; protected set; }
+    public int Energy { get; protected set; }
     protected Inventory Inventory { get; set; }
 
 
@@ -44,4 +51,16 @@ public class PersonModel : IWorldEntity
             }
         }
     }
+
+    public bool InsertItemIntoInventory(ItemType itemType) { return Inventory.AddItem(itemType); }
+
+    public bool ExtractItemFromInventory(ItemType itemType) { return Inventory.ExtractItem(itemType); }
+
+    public bool InventoryFull() { return Inventory.IsFull(); }
+
+    public bool InventoryEmpty() { return Inventory.IsEmpty(); }
+
+    public bool InventoryContainsItem(ItemType itemType) { return Inventory.ContainsItem(itemType); }
+
+    public bool InventoryAllowsItem(ItemType itemType) { return true; }
 }

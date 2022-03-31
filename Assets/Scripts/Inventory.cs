@@ -25,7 +25,7 @@ public class Inventory
         return true;
     }
 
-    public bool RemoveItem(ItemType itemType)
+    public bool ExtractItem(ItemType itemType)
     {
         if (!ItemAmounts.ContainsKey(itemType)) { return false; }
 
@@ -40,5 +40,15 @@ public class Inventory
 
     public bool IsEmpty() { return AmountHeld == 0; }
     public bool IsFull() { return AmountHeld == Capacity; }
-    public bool ContainsItemType(ItemType type) { return ItemAmounts.ContainsKey(type); }
+    public bool ContainsItem(ItemType type) { return ItemAmounts.ContainsKey(type); }
+}
+
+public interface IInventory
+{
+    public bool InsertItemIntoInventory(ItemType itemType);
+    public bool ExtractItemFromInventory(ItemType itemType);
+    public bool InventoryFull();
+    public bool InventoryEmpty();
+    public bool InventoryContainsItem(ItemType itemType);
+    public bool InventoryAllowsItem(ItemType itemType);
 }

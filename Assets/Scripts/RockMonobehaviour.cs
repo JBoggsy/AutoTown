@@ -5,16 +5,16 @@ using UnityEngine;
 public class RockMonobehaviour : WorldEntityMonoBehaviour
 {
     public RockModel Model { get; private set; }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
+    private bool needsUpdate = true;
+
     void Update()
     {
-        transform.position = Model.Position;
+        if (needsUpdate)
+        {
+            transform.position = Model.Position;
+            needsUpdate = false;
+        }
     }
 
     public void SetModel(RockModel model)

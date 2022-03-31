@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class TreeModel : IResourceDeposit
 {
-    // PUBLIC VARS
+    public TreeMonobehaviour Monobehaviour { protected get; set; }
+
+    public Vector3Int Position { get; protected set; }
+
     public ResourceDepositType Type { get; protected set; }
     public int AmountRemaining { get; protected set; }
-    public Vector3Int Position { get; protected set; }
-    public TreeMonobehaviour Monobehaviour { protected get; set; }
-    // PRIVATE VARS
 
-    // PUBLIC METHODS
+
     public TreeModel(int amount, int x, int y)
     {
         Type = ResourceDepositType.Tree;

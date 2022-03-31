@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 
-public class PersonMonobehaviour : MonoBehaviour
+public class TownCenterMonobehaviour : MonoBehaviour
 {
-    public PersonModel Model { get; protected set; }
+    public TownCenterModel Model { get; protected set; }
 
     private bool needsUpdate = true;
 
@@ -18,7 +16,7 @@ public class PersonMonobehaviour : MonoBehaviour
         }
     }
 
-    public void SetModel(PersonModel model)
+    public void SetModel(TownCenterModel model)
     {
         Model = model;
         Model.Monobehaviour = this;
