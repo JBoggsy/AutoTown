@@ -18,6 +18,8 @@ public class PersonMonobehaviour : MonoBehaviour
         }
     }
 
+    public void SetNeedsUpdate() { needsUpdate = true; }
+
     public void SetModel(PersonModel model)
     {
         Model = model;

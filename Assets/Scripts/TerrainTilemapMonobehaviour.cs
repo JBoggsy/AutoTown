@@ -37,7 +37,7 @@ public class TerrainTilemapMonobehaviour : MonoBehaviour
             for (int x=0; x<Region.Width; x++)
             {
                 tile_coordinate = new Vector3Int(x, y, 0);
-                switch (Region.GetTerrainAt(y, x))
+                switch (Region.GetTerrainAt(tile_coordinate))
                 {
                     case TerrainType.Grass:
                         TilemapGameObject.SetTile(tile_coordinate, GrassTile);

@@ -10,14 +10,16 @@ public class TownSceneManager : MonoBehaviour
     public GameObject TreePrefab;
     public GameObject RockPrefab;
     public GameObject PersonPrefab;
+    public GameObject TownCenterPrefab;
 
     public TownUIManager TownUIManager;
 
     public float SimulationStepTime = 0.1f;
 
-    private Dictionary<int, GameObject> ResourceDepositGameObjectsMap = new Dictionary<int, GameObject>();
-    private Dictionary<int, GameObject> PersonGameObjectsMap = new Dictionary<int, GameObject>();
-    
+    private Dictionary<int, GameObject> ResourceDepositGameObjectsLookup = new Dictionary<int, GameObject>();
+    private Dictionary<int, GameObject> PersonGameObjectsLookup = new Dictionary<int, GameObject>();
+    private Dictionary<int, GameObject> BuildingGameObjectsLookup = new Dictionary<int, GameObject>();
+
     private IEnumerator simulationCoroutine;
     private bool runSimulation = true;
 
@@ -67,27 +69,40 @@ public class TownSceneManager : MonoBehaviour
         }
     }
 
-    public void SpawnPerson (PersonModel person, int ID)
+    public void SpawnPerson(PersonModel person, int ID)
     {
         GameObject newPersonGameObject = GameObject.Instantiate(PersonPrefab);
-        PersonGameObjectsMap.Add(ID, newPersonGameObject);
+        PersonGameObjectsLookup.Add(ID, newPersonGameObject);
         newPersonGameObject.GetComponent<PersonMonobehaviour>().SetModel(person);
     }
 
-    public void SpawnResourceDeposit (IResourceDeposit deposit, int ID)
+    public void SpawnResourceDeposit(IResourceDeposit deposit, int ID)
     {
         GameObject newResourceDepositGameObject;
         switch (deposit.Type)
         {
             case ResourceDepositType.Tree:
                 newResourceDepositGameObject = GameObject.Instantiate(TreePrefab);
-                ResourceDepositGameObjectsMap.Add(ID, newResourceDepositGameObject);
+                ResourceDepositGameObjectsLookup.Add(ID, newResourceDepositGameObject);
                 newResourceDepositGameObject.GetComponent<TreeMonobehaviour>().SetModel((TreeModel)deposit);
                 break;
             case ResourceDepositType.Rock:
                 newResourceDepositGameObject = GameObject.Instantiate(RockPrefab);
-                ResourceDepositGameObjectsMap.Add(ID, newResourceDepositGameObject);
+                ResourceDepositGameObjectsLookup.Add(ID, newResourceDepositGameObject);
                 newResourceDepositGameObject.GetComponent<RockMonobehaviour>().SetModel((RockModel)deposit);
+                break;
+        }
+    }
+
+    public void SpawnBuilding(BuildingModel building, int ID)
+    {
+        GameObject newBuildingGameObject;
+        switch (building.buildingType)
+        {
+            case BuildingType.Town_Center:
+                newBuildingGameObject = GameObject.Instantiate(TownCenterPrefab);
+                BuildingGameObjectsLookup.Add(ID, newBuildingGameObject);
+                newBuildingGameObject.GetComponent<TownCenterMonobehaviour>().SetModel((TownCenterModel)building);
                 break;
         }
     }

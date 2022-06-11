@@ -23,11 +23,22 @@ public class PersonModel : IWorldEntity, IInventory
         Inventory = new Inventory(20);
     }
 
-    public bool Move(Vector3Int movement)
+
+    // ACTION METHODS
+    /////////////////
+
+    protected bool Move(Vector3Int movement)
     {
+
         Position += movement;
+        Monobehaviour.SetNeedsUpdate();
         return true;
     }
+
+    protected bool StoreItemInBuilding(int buildingID, ItemType item) { throw new NotImplementedException(); }
+    protected bool DropItem(ItemType itemType) { throw new NotImplementedException(); }
+    protected bool MineRock(int rockID) { throw new NotImplementedException(); }
+    protected bool ChopTree(int treeID) { throw new NotImplementedException(); }
 
     public void Simulate ()
     {

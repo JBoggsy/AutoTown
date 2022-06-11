@@ -4,7 +4,7 @@ public class TownCenterModel : BuildingModel, IInventory
 {
     public TownCenterMonobehaviour Monobehaviour;
 
-    public static new readonly BuildingType buildingType = BuildingType.Town_Center;
+    public new readonly BuildingType buildingType = BuildingType.Town_Center;
 
     protected Inventory Inventory { get; set; }
 
