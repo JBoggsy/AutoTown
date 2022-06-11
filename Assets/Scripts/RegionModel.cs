@@ -59,43 +59,65 @@ public class RegionModel
         
         int seed = (int)(Random.value * int.MaxValue);
         GenerateTerrain(seed);
-        CreatePerson(new Vector3Int(8, 8, 0));
+        CreatePerson(new Vector3Int(Width / 2, Height / 2, 0));
     }
 
-    private void GenerateTerrain(int Seed)
+    private void GenerateTerrain(int seed)
     {
-        Random.InitState(Seed);
+        Random.InitState(seed);
         mapData_Terrain = new TerrainType[Height, Width];
+        float island_radius = Mathf.Min(Height / 2, Width / 2);
+        float clearing_altitude = 0.5f;
+        int min_resources = 100;
+        int max_resources = 1000;
+        float scale = 1.0f;
+        float resouce_scarcity = 0.6f;
 
-        List<(float freq, float mag)> fourier_series = new List<(float, float)>()
+        List<(float freq, float mag)> fourier_series_topogrophy = new List<(float, float)>()
         {
-            (0.1f, 0.1f),
-            (0.05f, 0.2f),
-            (0.01f, 0.3f)
+            (0.100f * scale, 0.1f),
+            (0.050f * scale, 0.2f),
+            (0.010f * scale, 0.4f),
+            (0.005f * scale, 0.2f)
         };
 
-        float noise_offset = Random.Range(0f, 10000f);
+        List<(float freq, float mag)> fourier_series_resources = new List<(float, float)>()
+        {
+            (0.20f * scale, 0.1f),
+            (0.10f * scale, 0.2f),
+            (0.05f * scale, 0.3f)
+        };
+
+        float offset_topogrophy = Random.Range(0f, 10000f);
+        float offset_trees = Random.Range(0f, 10000f);
+        float offset_rocks = Random.Range(0f, 10000f);
+
         float altitude_ocean = 0.35f;
         float altitude_water = 0.40f;
         float altitude_grass = 0.65f;
+        float altitude_rocks = 1.00f;
+
+        AnimationCurve island_dropoff = new AnimationCurve();
+        island_dropoff.AddKey(new Keyframe(0.0f, altitude_rocks));
+        island_dropoff.AddKey(new Keyframe(0.7f, altitude_rocks));
+        island_dropoff.AddKey(new Keyframe(1.0f, altitude_ocean));
+
+        AnimationCurve center_clearing = new AnimationCurve();
+        center_clearing.AddKey(new Keyframe(0.00f, 1.0f));
+        center_clearing.AddKey(new Keyframe(0.10f, 1.0f));
+        center_clearing.AddKey(new Keyframe(0.20f, 0.0f));
+        center_clearing.AddKey(new Keyframe(1.00f, 0.0f));
 
         for (int x = 0; x < Width; x++)
         {
             for (int y = 0; y < Height; y++)
             {
-                float altitude = Util.PerlinNoiseMultisample(x, y, fourier_series, noise_offset);
+                float altitude = Util.PerlinNoiseMultisample(x, y, fourier_series_topogrophy, offset_topogrophy);
                 float distance = (new Vector3Int(x - Width / 2, y - Height / 2, 0)).magnitude;
+                altitude *= island_dropoff.Evaluate(distance / island_radius);
+                float clearing_weight = center_clearing.Evaluate(distance / island_radius);
+                altitude = Mathf.Lerp(altitude, clearing_altitude, clearing_weight);
 
-                /*
-                if (distance < 5)
-                {
-                    mapData_Terrain[y, x] = TerrainType.Grass;
-                }
-                else
-                {
-                    mapData_Terrain[y, x] = TerrainType.Water_Shallow;
-                }
-                */
                 TerrainType terrain;
                 if (altitude < altitude_ocean)
                 {
@@ -115,10 +137,37 @@ public class RegionModel
                 }
 
                 mapData_Terrain[x, y] = terrain;
+
+                if (terrain != TerrainType.Grass) { continue; }
+
+                float rocks = Util.PerlinNoiseMultisample(x, y, fourier_series_resources, offset_rocks);
+                float trees = Util.PerlinNoiseMultisample(x, y, fourier_series_resources, offset_trees);
+                rocks = Mathf.Lerp(rocks, 0, clearing_weight);
+                trees = Mathf.Lerp(trees, 0, clearing_weight);
+
+                ResourceDepositType type;
+                float richness;
+                if (rocks > resouce_scarcity)
+                {
+                    type = ResourceDepositType.Rock;
+                    richness = rocks;
+                }
+                else if (trees > resouce_scarcity)
+                {
+                    type = ResourceDepositType.Tree;
+                    richness = trees;
+                }
+                else
+                {
+                    continue;
+                }
+
+                richness = (richness - resouce_scarcity) / (1 - resouce_scarcity);
+                int quantity = (int)(richness * (max_resources - min_resources)) + min_resources;
+
+                CreateResourceDeposit(quantity, new Vector3Int(y, x, 0), type);
             }
         }
-        CreateResourceDeposit(500, new Vector3Int(11, 11, 0), ResourceDepositType.Tree);
-        CreateResourceDeposit(500, new Vector3Int(10, 10, 0), ResourceDepositType.Rock);
     }
 
     // ENTITY CREATION METHODS
