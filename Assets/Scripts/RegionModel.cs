@@ -1,4 +1,4 @@
-using System;
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -56,15 +56,38 @@ public class RegionModel
 
         Width = width; 
         Height = height;
+        
+        int seed = (int)(Random.value * int.MaxValue);
+        GenerateTerrain(seed);
+        CreatePerson(new Vector3Int(8, 8, 0));
+    }
+
+    private void GenerateTerrain(int Seed)
+    {
+        Random.InitState(Seed);
         mapData_Terrain = new TerrainType[Height, Width];
 
-        for (int x = 0; x < width; x++)
+        List<(float freq, float mag)> fourier_series = new List<(float, float)>()
         {
-            for (int y = 0; y < height; y++)
-            {
-                Vector3Int location = new Vector3Int(x - width / 2, y - height / 2, 0);
+            (0.1f, 0.1f),
+            (0.05f, 0.2f),
+            (0.01f, 0.3f)
+        };
 
-                if (location.magnitude < 5)
+        float noise_offset = Random.Range(0f, 10000f);
+        float altitude_ocean = 0.35f;
+        float altitude_water = 0.40f;
+        float altitude_grass = 0.65f;
+
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                float altitude = Util.PerlinNoiseMultisample(x, y, fourier_series, noise_offset);
+                float distance = (new Vector3Int(x - Width / 2, y - Height / 2, 0)).magnitude;
+
+                /*
+                if (distance < 5)
                 {
                     mapData_Terrain[y, x] = TerrainType.Grass;
                 }
@@ -72,11 +95,30 @@ public class RegionModel
                 {
                     mapData_Terrain[y, x] = TerrainType.Water_Shallow;
                 }
+                */
+                TerrainType terrain;
+                if (altitude < altitude_ocean)
+                {
+                    terrain = TerrainType.Water_Deep;
+                }
+                else if (altitude < altitude_water)
+                {
+                    terrain = TerrainType.Water_Shallow;
+                }
+                else if (altitude < altitude_grass)
+                {
+                    terrain = TerrainType.Grass;
+                }
+                else
+                {
+                    terrain = TerrainType.Rock;
+                }
+
+                mapData_Terrain[x, y] = terrain;
             }
         }
         CreateResourceDeposit(500, new Vector3Int(11, 11, 0), ResourceDepositType.Tree);
         CreateResourceDeposit(500, new Vector3Int(10, 10, 0), ResourceDepositType.Rock);
-        CreatePerson(new Vector3Int(8, 8, 0));
     }
 
     // ENTITY CREATION METHODS
