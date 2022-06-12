@@ -63,7 +63,11 @@ public class RegionModel
 
     private void GenerateTerrain(int seed)
     {
-        WorldGen.Create(Width, Height, seed, out mapData_Terrain, out List<WorldGen.ResourceDeposit> deposits);
+        WorldGen.Parameters parameters = WorldGen.Parameters.Default();
+        parameters.Width = Width;
+        parameters.Height = Height;
+
+        WorldGen.Create(parameters, seed, out mapData_Terrain, out List<WorldGen.ResourceDeposit> deposits);
 
         foreach (WorldGen.ResourceDeposit deposit in deposits)
         {
