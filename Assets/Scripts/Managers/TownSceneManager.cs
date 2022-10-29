@@ -69,14 +69,14 @@ public class TownSceneManager : MonoBehaviour
         }
     }
 
-    public void SpawnPerson(PersonModel person, int ID)
+    public void SpawnPerson(PersonEntity person, int ID)
     {
         GameObject newPersonGameObject = GameObject.Instantiate(PersonPrefab);
         PersonGameObjectsLookup.Add(ID, newPersonGameObject);
         newPersonGameObject.GetComponent<PersonMonobehaviour>().SetModel(person);
     }
 
-    public void SpawnResourceDeposit(IResourceDeposit deposit, int ID)
+    public void SpawnResourceDeposit(IResourceDepositEntity deposit, int ID)
     {
         GameObject newResourceDepositGameObject;
         switch (deposit.Type)
@@ -84,17 +84,17 @@ public class TownSceneManager : MonoBehaviour
             case ResourceDepositType.Tree:
                 newResourceDepositGameObject = GameObject.Instantiate(TreePrefab);
                 ResourceDepositGameObjectsLookup.Add(ID, newResourceDepositGameObject);
-                newResourceDepositGameObject.GetComponent<TreeMonobehaviour>().SetModel((TreeModel)deposit);
+                newResourceDepositGameObject.GetComponent<TreeMonobehaviour>().SetModel((TreeEntity)deposit);
                 break;
             case ResourceDepositType.Rock:
                 newResourceDepositGameObject = GameObject.Instantiate(RockPrefab);
                 ResourceDepositGameObjectsLookup.Add(ID, newResourceDepositGameObject);
-                newResourceDepositGameObject.GetComponent<RockMonobehaviour>().SetModel((RockModel)deposit);
+                newResourceDepositGameObject.GetComponent<RockMonobehaviour>().SetModel((RockEntity)deposit);
                 break;
         }
     }
 
-    public void SpawnBuilding(BuildingModel building, int ID)
+    public void SpawnBuilding(BuildingEntity building, int ID)
     {
         GameObject newBuildingGameObject;
         switch (building.buildingType)
@@ -102,7 +102,7 @@ public class TownSceneManager : MonoBehaviour
             case BuildingType.Town_Center:
                 newBuildingGameObject = GameObject.Instantiate(TownCenterPrefab);
                 BuildingGameObjectsLookup.Add(ID, newBuildingGameObject);
-                newBuildingGameObject.GetComponent<TownCenterMonobehaviour>().SetModel((TownCenterModel)building);
+                newBuildingGameObject.GetComponent<TownCenterMonobehaviour>().SetModel((TownCenterEntity)building);
                 break;
         }
     }

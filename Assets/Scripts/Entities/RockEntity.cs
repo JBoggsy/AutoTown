@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RockModel : IResourceDeposit
+public class RockEntity : IResourceDepositEntity
 {
     public RockMonobehaviour Monobehaviour { protected get; set; }
 
@@ -10,7 +10,7 @@ public class RockModel : IResourceDeposit
     public int AmountRemaining { get; protected set; }
 
     // PUBLIC METHODS
-    public RockModel(int amount, int x, int y)
+    public RockEntity(int amount, int x, int y)
     {
         Type = ResourceDepositType.Rock;
         AmountRemaining = amount;

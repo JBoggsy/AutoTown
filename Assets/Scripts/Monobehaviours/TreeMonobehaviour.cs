@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TreeMonobehaviour : WorldEntityMonoBehaviour
 {
-    public TreeModel Model { get; private set; }
+    public TreeEntity Model { get; private set; }
 
     private bool needsUpdate = true;
 
@@ -17,7 +17,7 @@ public class TreeMonobehaviour : WorldEntityMonoBehaviour
         }
     }
 
-    public void SetModel(TreeModel model)
+    public void SetModel(TreeEntity model)
     { 
         Model = model; 
         Model.Monobehaviour = this;

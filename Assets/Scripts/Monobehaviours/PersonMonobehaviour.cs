@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PersonMonobehaviour : MonoBehaviour
 {
-    public PersonModel Model { get; protected set; }
+    public PersonEntity Model { get; protected set; }
 
     private bool needsUpdate = true;
 
@@ -20,7 +20,7 @@ public class PersonMonobehaviour : MonoBehaviour
 
     public void SetNeedsUpdate() { needsUpdate = true; }
 
-    public void SetModel(PersonModel model)
+    public void SetModel(PersonEntity model)
     {
         Model = model;
         Model.Monobehaviour = this;

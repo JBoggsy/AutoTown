@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface IResourceDeposit: IWorldEntity
+public interface IResourceDepositEntity: IWorldEntity
 {
     public ResourceDepositType Type { get; }
     public int AmountRemaining { get; }

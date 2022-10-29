@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class BuildingModel : IWorldEntity
+public abstract class BuildingEntity : IWorldEntity
 {
     public Vector3Int Position { get; protected set; }
 

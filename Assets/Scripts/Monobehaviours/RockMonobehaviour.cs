@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RockMonobehaviour : WorldEntityMonoBehaviour
 {
-    public RockModel Model { get; private set; }
+    public RockEntity Model { get; private set; }
 
     private bool needsUpdate = true;
 
@@ -17,7 +17,7 @@ public class RockMonobehaviour : WorldEntityMonoBehaviour
         }
     }
 
-    public void SetModel(RockModel model)
+    public void SetModel(RockEntity model)
     { 
         Model = model; 
         Model.Monobehaviour = this;

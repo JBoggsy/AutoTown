@@ -31,15 +31,15 @@ public class RegionModel
 
     // Resources layer
     private int nextResourceDepositID = 0;
-    private Dictionary<int, IResourceDeposit> resourceDepositLookup = new Dictionary<int, IResourceDeposit>();
+    private Dictionary<int, IResourceDepositEntity> resourceDepositLookup = new Dictionary<int, IResourceDepositEntity>();
 
     // Persons layer
     private int nextPersonID = 0;
-    private Dictionary<int, PersonModel> personLookup = new Dictionary<int,PersonModel>();
+    private Dictionary<int, PersonEntity> personLookup = new Dictionary<int,PersonEntity>();
 
     // Buildings layer
     private int nextBuildingID = 0;
-    private Dictionary<int, BuildingModel> buildingLookup = new Dictionary<int,BuildingModel>();
+    private Dictionary<int, BuildingEntity> buildingLookup = new Dictionary<int,BuildingEntity>();
 
     // Passability layer
     private Dictionary<Vector3Int, bool> passabilityLookup = new Dictionary<Vector3Int, bool>();
@@ -94,9 +94,9 @@ public class RegionModel
     /// </summary>
     /// <param name="position"></param>
     /// <returns></returns>
-    public PersonModel CreatePerson(Vector3Int position)
+    public PersonEntity CreatePerson(Vector3Int position)
     {
-        PersonModel newPerson = new PersonModel(position.x, position.y);
+        PersonEntity newPerson = new PersonEntity(position.x, position.y);
         personLookup.Add(nextPersonID, newPerson);
         manager.SpawnPerson(newPerson, nextPersonID);
         nextPersonID++;
@@ -117,16 +117,16 @@ public class RegionModel
     /// <param name="position">The X,Y coordinate of the deposit (Z should always be 0).</param>
     /// <param name="type">The type of the deposit.</param>
     /// <returns></returns>
-    public IResourceDeposit CreateResourceDeposit(int amount, Vector3Int position, ResourceDepositType type)
+    public IResourceDepositEntity CreateResourceDeposit(int amount, Vector3Int position, ResourceDepositType type)
     {
-        IResourceDeposit newResourceDeposit;
+        IResourceDepositEntity newResourceDeposit;
         switch (type)
         {
             case ResourceDepositType.Tree:
-                newResourceDeposit = new TreeModel(amount, position.x, position.y);
+                newResourceDeposit = new TreeEntity(amount, position.x, position.y);
                 break;
             case ResourceDepositType.Rock:
-                newResourceDeposit = new RockModel(amount, position.x, position.y);
+                newResourceDeposit = new RockEntity(amount, position.x, position.y);
                 break;
             default:
                 return null;
@@ -138,13 +138,13 @@ public class RegionModel
         return newResourceDeposit;
     }
 
-    public BuildingModel CreateBuilding(Vector3Int position, BuildingType type)
+    public BuildingEntity CreateBuilding(Vector3Int position, BuildingType type)
     {
-        BuildingModel newBuilding;
+        BuildingEntity newBuilding;
         switch (type)
         {
             case BuildingType.Town_Center:
-                newBuilding = new TownCenterModel(position.x, position.y);
+                newBuilding = new TownCenterEntity(position.x, position.y);
                 break;
             default:
                 return null;
@@ -186,7 +186,7 @@ public class RegionModel
 
     public void SimulateOneStep ()
     {
-        foreach (PersonModel person in personLookup.Values)
+        foreach (PersonEntity person in personLookup.Values)
         {
             person.Simulate();
         }

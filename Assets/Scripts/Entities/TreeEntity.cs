@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TreeModel : IResourceDeposit
+public class TreeEntity : IResourceDepositEntity
 {
     public TreeMonobehaviour Monobehaviour { protected get; set; }
 
@@ -10,7 +10,7 @@ public class TreeModel : IResourceDeposit
     public int AmountRemaining { get; protected set; }
 
 
-    public TreeModel(int amount, int x, int y)
+    public TreeEntity(int amount, int x, int y)
     {
         Type = ResourceDepositType.Tree;
         AmountRemaining = amount;

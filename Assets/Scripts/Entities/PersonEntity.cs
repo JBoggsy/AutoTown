@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PersonModel : IWorldEntity, IInventory
+public class PersonEntity : IWorldEntity, IInventory
 {
     public PersonMonobehaviour Monobehaviour { protected get; set; }
 
@@ -17,7 +17,7 @@ public class PersonModel : IWorldEntity, IInventory
     protected Inventory Inventory { get; set; }
 
 
-    public PersonModel(int x, int y)
+    public PersonEntity(int x, int y)
     {
         Position = new Vector3Int(x, y, 0);
         Inventory = new Inventory(20);

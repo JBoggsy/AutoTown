@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TownCenterModel : BuildingModel, IInventory
+public class TownCenterEntity : BuildingEntity, IInventory
 {
     public TownCenterMonobehaviour Monobehaviour;
 
@@ -8,7 +8,7 @@ public class TownCenterModel : BuildingModel, IInventory
 
     protected Inventory Inventory { get; set; }
 
-    public TownCenterModel(int x, int y)
+    public TownCenterEntity(int x, int y)
     {
         Position = new Vector3Int(x, y, 0);
         Health = 100;
