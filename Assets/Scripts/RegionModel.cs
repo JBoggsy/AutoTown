@@ -1,4 +1,4 @@
-using System;
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,25 +61,24 @@ public class RegionModel
         manager = TownSceneManager.Instance;
         runningSimulation = false;
 
-        Width = width; 
+        Width = width;
         Height = height;
-        mapData_Terrain = new TerrainType[Height, Width];
+        
+        GenerateTerrain(seed : (int)(Random.value * int.MaxValue));
+        CreatePerson(new Vector3Int(Width / 2, Height / 2, 0));
+    }
 
-        for (int x = 0; x < width; x++)
+    private void GenerateTerrain(int seed)
+    {
+        WorldGen.Parameters parameters = WorldGen.Parameters.Default();
+        parameters.Width = Width;
+        parameters.Height = Height;
+
+        WorldGen.Create(parameters, seed, out mapData_Terrain, out List<WorldGen.ResourceDeposit> deposits);
+
+        foreach (WorldGen.ResourceDeposit deposit in deposits)
         {
-            for (int y = 0; y < height; y++)
-            {
-                Vector3Int location = new Vector3Int(x - width / 2, y - height / 2, 0);
-
-                if (location.magnitude < 5)
-                {
-                    mapData_Terrain[y, x] = TerrainType.Grass;
-                }
-                else
-                {
-                    mapData_Terrain[y, x] = TerrainType.Water_Shallow;
-                }
-            }
+            CreateResourceDeposit(deposit.Quantity, (Vector3Int)deposit.Location, deposit.Type);
         }
         CreateResourceDeposit(500, new Vector3Int(11, 11, 0), ResourceDepositType.Tree);
         CreateResourceDeposit(500, new Vector3Int(10, 10, 0), ResourceDepositType.Rock);

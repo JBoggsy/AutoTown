@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class Util
@@ -17,5 +19,19 @@ public static class Util
         {
             return null;
         }
+    }
+
+    public static float PerlinNoiseMultisample(float x, float y, List<(float freq, float mag)> frequencies, float offset)
+    {
+        float sample_acc = 0f;
+        float weight_acc = 0f;
+
+        foreach ((float freq, float mag) in frequencies)
+        {
+            sample_acc += mag * Mathf.PerlinNoise(x * freq + offset, y * freq + offset);
+            weight_acc += mag;
+        }
+
+        return sample_acc / weight_acc;
     }
 }
