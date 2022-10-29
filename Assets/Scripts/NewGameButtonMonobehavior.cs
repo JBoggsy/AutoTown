@@ -7,6 +7,6 @@ public class NewGameButtonMonobehavior : MonoBehaviour
 {
     public void ChangeSceneToGame()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("TownScene");
     }
 }

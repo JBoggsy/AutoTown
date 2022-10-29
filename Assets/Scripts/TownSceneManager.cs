@@ -27,7 +27,7 @@ public class TownSceneManager : MonoBehaviour
     public void Awake()
     {
         Instance = this;
-        Region = new RegionModel(20, 20);
+        Region = new RegionModel(200, 200);
         simulationCoroutine = Simulate();
     }
 

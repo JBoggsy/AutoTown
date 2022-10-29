@@ -80,10 +80,10 @@ public class RegionModel
         {
             CreateResourceDeposit(deposit.Quantity, (Vector3Int)deposit.Location, deposit.Type);
         }
-        CreateResourceDeposit(500, new Vector3Int(11, 11, 0), ResourceDepositType.Tree);
-        CreateResourceDeposit(500, new Vector3Int(10, 10, 0), ResourceDepositType.Rock);
-        CreatePerson(new Vector3Int(8, 8, 0));
-        CreateBuilding(new Vector3Int(12, 10, 0), BuildingType.Town_Center);
+        //CreateResourceDeposit(500, new Vector3Int(11, 11, 0), ResourceDepositType.Tree);
+        //CreateResourceDeposit(500, new Vector3Int(10, 10, 0), ResourceDepositType.Rock);
+        //CreatePerson(new Vector3Int(8, 8, 0));
+        //CreateBuilding(new Vector3Int(12, 10, 0), BuildingType.Town_Center);
     }
 
     // ENTITY CREATION METHODS
