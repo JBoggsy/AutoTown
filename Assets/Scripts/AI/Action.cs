@@ -1,9 +1,19 @@
-﻿public class Action
+﻿public abstract class Action
 {
-    public int id { get; private set; }
+    public const string Name = "Action";
+    public const string Description = "Description";
 
-    public Action(int id)
+    public AgentEntity AgentEntity { get; protected set; }
+
+    public Action(AgentEntity agentEntity)
     {
-        this.id = id;
+        AgentEntity = agentEntity;
     }
+
+    /// <summary>
+    /// Attempt to apply the action to the region model.
+    /// </summary>
+    /// <param name="regionModel"></param>
+    /// <returns>True if action was successful</returns>
+    public abstract bool ApplyAction(RegionModel regionModel);
 }

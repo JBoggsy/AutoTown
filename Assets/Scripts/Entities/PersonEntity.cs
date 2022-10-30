@@ -31,11 +31,6 @@ public class PersonEntity : AgentEntity
         return new_percept;
     }
 
-    public override bool ApplyNextAction(RegionModel region)
-    {
-        throw new NotImplementedException();
-    }
-
 
     ////////////////////
     // ACTION METHODS //

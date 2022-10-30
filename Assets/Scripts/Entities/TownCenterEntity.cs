@@ -26,4 +26,19 @@ public class TownCenterEntity : BuildingEntity, IInventoryEntity
     public bool InventoryContainsItem(ItemType itemType) { return Inventory.ContainsItem(itemType); }
 
     public bool InventoryAllowsItem(ItemType itemType) { return true; }
+
+    public override bool ApplyDamage(float damage)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override bool ApplyHeal(float heal)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Destroy()
+    {
+        throw new System.NotImplementedException();
+    }
 }

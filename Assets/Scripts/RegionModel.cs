@@ -186,9 +186,17 @@ public class RegionModel
 
     public void SimulateOneStep ()
     {
+        List<Action> actions = new List<Action>();
         foreach (PersonEntity person in personLookup.Values)
         {
-            person.DecideNextAction(this);
+            actions.Add(person.DecideNextAction(this));
         }
+        foreach (Action action in actions)
+        {
+            action.ApplyAction(this);
+        }
+        // In the future, this is where action conflicts (e.g., movement collisions)
+        // should be resolved by evaluating the world state and ensuring it still complies
+        // with the rules
     }
 }
