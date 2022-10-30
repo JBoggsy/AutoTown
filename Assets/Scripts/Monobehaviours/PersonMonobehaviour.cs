@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PersonMonobehaviour : MonoBehaviour
+public class PersonMonobehaviour : WorldEntityMonoBehaviour
 {
     public PersonEntity Model { get; protected set; }
 

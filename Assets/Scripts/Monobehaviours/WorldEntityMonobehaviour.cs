@@ -9,6 +9,7 @@ public abstract class WorldEntityMonoBehaviour : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TownCenterEntity : BuildingEntity, IInventory
+public class TownCenterEntity : BuildingEntity, IInventoryEntity
 {
     public TownCenterMonobehaviour Monobehaviour;
 

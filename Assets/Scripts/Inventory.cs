@@ -42,13 +42,3 @@ public class Inventory
     public bool IsFull() { return AmountHeld == Capacity; }
     public bool ContainsItem(ItemType type) { return ItemAmounts.ContainsKey(type); }
 }
-
-public interface IInventory
-{
-    public bool InsertItemIntoInventory(ItemType itemType);
-    public bool ExtractItemFromInventory(ItemType itemType);
-    public bool InventoryFull();
-    public bool InventoryEmpty();
-    public bool InventoryContainsItem(ItemType itemType);
-    public bool InventoryAllowsItem(ItemType itemType);
-}

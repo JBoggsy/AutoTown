@@ -188,7 +188,7 @@ public class RegionModel
     {
         foreach (PersonEntity person in personLookup.Values)
         {
-            person.Simulate();
+            person.DecideNextAction(this);
         }
     }
 }
