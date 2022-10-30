@@ -31,11 +31,18 @@ public class RegionModel
 
     // Resources layer
     private int nextResourceDepositID = 0;
-    private Dictionary<int, IResourceDeposit> resourceDepositMap = new Dictionary<int, IResourceDeposit>();
+    private Dictionary<int, IResourceDepositEntity> resourceDepositLookup = new Dictionary<int, IResourceDepositEntity>();
 
     // Persons layer
     private int nextPersonID = 0;
-    private Dictionary<int, PersonModel> personMap = new Dictionary<int,PersonModel>();
+    private Dictionary<int, PersonEntity> personLookup = new Dictionary<int,PersonEntity>();
+
+    // Buildings layer
+    private int nextBuildingID = 0;
+    private Dictionary<int, BuildingEntity> buildingLookup = new Dictionary<int,BuildingEntity>();
+
+    // Passability layer
+    private Dictionary<Vector3Int, bool> passabilityLookup = new Dictionary<Vector3Int, bool>();
 
 
     //////////////
@@ -73,6 +80,10 @@ public class RegionModel
         {
             CreateResourceDeposit(deposit.Quantity, (Vector3Int)deposit.Location, deposit.Type);
         }
+        //CreateResourceDeposit(500, new Vector3Int(11, 11, 0), ResourceDepositType.Tree);
+        //CreateResourceDeposit(500, new Vector3Int(10, 10, 0), ResourceDepositType.Rock);
+        //CreatePerson(new Vector3Int(8, 8, 0));
+        //CreateBuilding(new Vector3Int(12, 10, 0), BuildingType.Town_Center);
     }
 
     // ENTITY CREATION METHODS
@@ -83,10 +94,10 @@ public class RegionModel
     /// </summary>
     /// <param name="position"></param>
     /// <returns></returns>
-    public PersonModel CreatePerson(Vector3Int position)
+    public PersonEntity CreatePerson(Vector3Int position)
     {
-        PersonModel newPerson = new PersonModel(position.x, position.y);
-        personMap.Add(nextPersonID, newPerson);
+        PersonEntity newPerson = new PersonEntity(position.x, position.y);
+        personLookup.Add(nextPersonID, newPerson);
         manager.SpawnPerson(newPerson, nextPersonID);
         nextPersonID++;
         return newPerson;
@@ -106,44 +117,86 @@ public class RegionModel
     /// <param name="position">The X,Y coordinate of the deposit (Z should always be 0).</param>
     /// <param name="type">The type of the deposit.</param>
     /// <returns></returns>
-    public IResourceDeposit CreateResourceDeposit(int amount, Vector3Int position, ResourceDepositType type)
+    public IResourceDepositEntity CreateResourceDeposit(int amount, Vector3Int position, ResourceDepositType type)
     {
-        IResourceDeposit newResourceDeposit;
+        IResourceDepositEntity newResourceDeposit;
         switch (type)
         {
             case ResourceDepositType.Tree:
-                newResourceDeposit = new TreeModel(amount, position.x, position.y);
+                newResourceDeposit = new TreeEntity(amount, position.x, position.y);
                 break;
             case ResourceDepositType.Rock:
-                newResourceDeposit = new RockModel(amount, position.x, position.y);
+                newResourceDeposit = new RockEntity(amount, position.x, position.y);
                 break;
             default:
                 return null;
         }
-        resourceDepositMap.Add(nextResourceDepositID, newResourceDeposit);
+        resourceDepositLookup.Add(nextResourceDepositID, newResourceDeposit);
+        passabilityLookup[position] = false;
         manager.SpawnResourceDeposit(newResourceDeposit, nextResourceDepositID);
         nextResourceDepositID++;
         return newResourceDeposit;
     }
 
+    public BuildingEntity CreateBuilding(Vector3Int position, BuildingType type)
+    {
+        BuildingEntity newBuilding;
+        switch (type)
+        {
+            case BuildingType.Town_Center:
+                newBuilding = new TownCenterEntity(position.x, position.y);
+                break;
+            default:
+                return null;
+        }
+        buildingLookup.Add(nextBuildingID, newBuilding);
+        passabilityLookup[position] = false;
+        manager.SpawnBuilding(newBuilding, nextBuildingID);
+        nextBuildingID++;
+        return newBuilding;
+    }
 
     // STATE RETRIEVAL METHODS
     //////////////////////////
 
-    public TerrainType GetTerrainAt(int y, int x)
+    /// <summary>
+    /// Get the terrain type at the give position.
+    /// </summary>
+    /// <param name="position">A Vector3Int representing the position to query.</param>
+    /// <returns>The `TerrainType` of the given position.</returns>
+    public TerrainType GetTerrainAt(Vector3Int position)
     {
-        return mapData_Terrain[y, x];
+        return mapData_Terrain[position.y, position.x];
     }
-
+    
+    /// <summary>
+    /// Indicate whether the specified position is passable or not.
+    /// </summary>
+    public bool IsPassable(Vector3Int position)
+    {
+        if (!passabilityLookup.ContainsKey(position))
+        {
+            passabilityLookup.Add(position, true);
+        }
+        return passabilityLookup[position];
+    }
 
     // SIMULATION
     /////////////
 
     public void SimulateOneStep ()
     {
-        foreach (PersonModel person in personMap.Values)
+        List<Action> actions = new List<Action>();
+        foreach (PersonEntity person in personLookup.Values)
         {
-            person.Simulate();
+            actions.Add(person.DecideNextAction(this));
         }
+        foreach (Action action in actions)
+        {
+            action.ApplyAction(this);
+        }
+        // In the future, this is where action conflicts (e.g., movement collisions)
+        // should be resolved by evaluating the world state and ensuring it still complies
+        // with the rules
     }
 }

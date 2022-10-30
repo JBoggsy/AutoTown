@@ -155,7 +155,9 @@ MonoBehaviour:
   TreePrefab: {fileID: 8707980746135263858, guid: e07428dc2e5e03845beddb2d55f9590b, type: 3}
   RockPrefab: {fileID: 3269617437483027572, guid: a6d3f6af65d1c6044a3aebfe56ff3337, type: 3}
   PersonPrefab: {fileID: 1269479069134330931, guid: 2cdb120e7c8ec8543a86283b1992f3c6, type: 3}
+  TownCenterPrefab: {fileID: 4589676025691460052, guid: f3e963f07be99414484f93293c2ea430, type: 3}
   TownUIManager: {fileID: 1440242670}
+  SimulationStepTime: 0.5
 --- !u!4 &118940398
 Transform:
   m_ObjectHideFlags: 0
@@ -166,6 +168,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -260,6 +263,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -298,6 +302,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1834426476}
   m_RootOrder: 0
@@ -313,6 +318,7 @@ TilemapRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -441,7 +447,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 631159308}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4234e2c27eb9c9489df4892fe8cb781, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ceb7b8be8cb7d14baed5b40a2ff9258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   GrassTile: {fileID: 11400000, guid: b2f3f27b29c750b4f833d3b77d4b6b67, type: 2}
@@ -480,6 +486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -512,6 +519,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -596,6 +604,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -609,11 +618,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1045126723}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f03e12078b8a09649af059a8425d833d, type: 3}
+  m_Script: {fileID: 11500000, guid: c54048cfc31610c4f9a5854441c66e0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PanSpeed: 1
-  ZoomSpeed: 1.2
+  ZoomSpeed: 1.5
 --- !u!1 &1424580871
 GameObject:
   m_ObjectHideFlags: 0
@@ -704,6 +713,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -755,6 +765,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -798,6 +809,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 631159309}
   m_Father: {fileID: 0}
