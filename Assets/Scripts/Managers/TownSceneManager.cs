@@ -29,6 +29,7 @@ public class TownSceneManager : MonoBehaviour
         Instance = this;
         Region = new RegionModel(200, 200);
         simulationCoroutine = Simulate();
+        print("Created TwonSceneManager");
     }
 
     public void Start ()

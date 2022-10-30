@@ -32,6 +32,7 @@ public class TerrainTilemapMonobehaviour : MonoBehaviour
     public void Refresh()
     {
         Vector3Int tile_coordinate;
+        print(Region);
         for (int y=0; y<Region.Height; y++)
         {
             for (int x=0; x<Region.Width; x++)
