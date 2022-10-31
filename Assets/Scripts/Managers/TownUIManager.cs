@@ -13,12 +13,11 @@ public class TownUIManager : MonoBehaviour
 
     private GameObject Popup;
 
-    public void ShowPopup(string text, Vector2 position)
+    public void ShowPopup(string text, Transform transform)
     {
         ClearPopup();
-        Popup = Instantiate(PopupPrefab, WorldCanvas.transform);
+        Popup = Instantiate(PopupPrefab, transform);
         Popup.GetComponent<Popup>().SetText(text);
-        Popup.transform.localPosition = position;
     }
 
     public void ClearPopup()

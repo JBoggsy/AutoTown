@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7217759400957613622}
   - component: {fileID: -7721554164824631478}
   - component: {fileID: 5483155191531850409}
+  - component: {fileID: 2214271230332467806}
   m_Layer: 0
   m_Name: PersonPrefab
   m_TagString: Untagged
@@ -97,3 +98,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90a1e3ad2eac5d5439965997ffe7fe63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &2214271230332467806
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269479069134330931}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.5, y: 0.5}
+  serializedVersion: 2
+  m_Radius: 0.5

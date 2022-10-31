@@ -23,13 +23,16 @@ public class TownSceneManager : MonoBehaviour
     private IEnumerator simulationCoroutine;
     private bool runSimulation = true;
 
+    private WorldEntityMonoBehaviour SelectedEntity;
+    private bool HasSelectedEntity { get { return SelectedEntity != null; } }
+
 
     public void Awake()
     {
         Instance = this;
         Region = new RegionModel(200, 200);
         simulationCoroutine = Simulate();
-        print("Created TwonSceneManager");
+        print("Created TownSceneManager");
     }
 
     public void Start ()
@@ -39,42 +42,64 @@ public class TownSceneManager : MonoBehaviour
 
     public void Update()
     {
+        // LEFT CLICK
         if (Input.GetMouseButtonDown(0))
         {
-            bool clicked_on_object = false;
-
-            GameObject game_object = Util.GetObjectUnderCursor();
-            if (game_object != null)
+            ClearSelection();
+            WorldEntityMonoBehaviour entity = Util.GetObjectUnderCursor<WorldEntityMonoBehaviour>();
+            if (entity != null)
             {
-                MonoBehaviour mono_behaviour = game_object.GetComponent<MonoBehaviour>();
-                if (mono_behaviour != null && mono_behaviour is WorldEntityMonoBehaviour)
-                {
-                    clicked_on_object = true;
-                    string label = "";
-                    if (mono_behaviour is TreeMonobehaviour tree)
-                    {
-                        label = "Tree (" + tree.Model.AmountRemaining + ")";
-                    }
-                    if (mono_behaviour is RockMonobehaviour rock)
-                    {
-                        label = "Rock (" + rock.Model.AmountRemaining + ")";
-                    }
-                    TownUIManager.ShowPopup(label, mono_behaviour.transform.position);
-                }
-            }
-
-            if (!clicked_on_object)
-            {
-                TownUIManager.ClearPopup();
+                Input_Select(entity);
             }
         }
+
+        // RIGHT CLICK
+        if (Input.GetMouseButtonDown(1))
+        {
+            WorldEntityMonoBehaviour entity = Util.GetObjectUnderCursor<WorldEntityMonoBehaviour>();
+            if (entity != null)
+            {
+                if (entity.Model == null)
+                {
+                    Debug.Log("well there we go then");
+                }
+                Input_Command((Vector2Int)entity.Model.Position);
+            }
+        }
+    }
+
+    private void Input_Select(WorldEntityMonoBehaviour entity)
+    {
+        SelectedEntity = entity;
+        if (SelectedEntity == null)
+        {
+            Debug.Log("why is this");
+        }
+        TownUIManager.ShowPopup(SelectedEntity.GetPopupText(), SelectedEntity.transform);
+    }
+
+    private void Input_Command(Vector2Int coords)
+    {
+        if (HasSelectedEntity
+            && SelectedEntity is PersonMonobehaviour person
+            && person.Model is PersonEntity entity
+            && entity.AgentController is UserInputACI controller)
+        {
+            controller.HandleUserInput(coords);
+        }
+    }
+
+    private void ClearSelection()
+    {
+        SelectedEntity = null;
+        TownUIManager.ClearPopup();
     }
 
     public void SpawnPerson(PersonEntity person, int ID)
     {
         GameObject newPersonGameObject = GameObject.Instantiate(PersonPrefab);
         PersonGameObjectsLookup.Add(ID, newPersonGameObject);
-        newPersonGameObject.GetComponent<PersonMonobehaviour>().SetModel(person);
+        newPersonGameObject.GetComponent<PersonMonobehaviour>().Initialize(person);
     }
 
     public void SpawnResourceDeposit(IResourceDepositEntity deposit, int ID)
@@ -85,12 +110,12 @@ public class TownSceneManager : MonoBehaviour
             case ResourceDepositType.Tree:
                 newResourceDepositGameObject = GameObject.Instantiate(TreePrefab);
                 ResourceDepositGameObjectsLookup.Add(ID, newResourceDepositGameObject);
-                newResourceDepositGameObject.GetComponent<TreeMonobehaviour>().SetModel((TreeEntity)deposit);
+                newResourceDepositGameObject.GetComponent<TreeMonobehaviour>().Initialize((TreeEntity)deposit);
                 break;
             case ResourceDepositType.Rock:
                 newResourceDepositGameObject = GameObject.Instantiate(RockPrefab);
                 ResourceDepositGameObjectsLookup.Add(ID, newResourceDepositGameObject);
-                newResourceDepositGameObject.GetComponent<RockMonobehaviour>().SetModel((RockEntity)deposit);
+                newResourceDepositGameObject.GetComponent<RockMonobehaviour>().Initialize((RockEntity)deposit);
                 break;
         }
     }
