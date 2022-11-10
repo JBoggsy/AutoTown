@@ -38,3 +38,17 @@ public class WalkAction : Action
         return true;
     }
 }
+
+public class NoAction : Action
+{
+    public new const string Name = "NoAction";
+    public NoAction(AgentEntity agentEntity) : base(agentEntity)
+    {
+
+    }
+
+    public override bool ApplyAction(RegionModel regionModel)
+    {
+        return true;
+    }
+}

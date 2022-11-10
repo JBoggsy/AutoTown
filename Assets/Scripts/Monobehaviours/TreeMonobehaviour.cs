@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class TreeMonobehaviour : WorldEntityMonoBehaviour
 {
-    public TreeEntity Model { get; private set; }
-
-    private bool needsUpdate = true;
+    private bool needsUpdate = false;
 
     void Update()
     {
@@ -17,9 +15,14 @@ public class TreeMonobehaviour : WorldEntityMonoBehaviour
         }
     }
 
-    public void SetModel(TreeEntity model)
-    { 
-        Model = model; 
-        Model.Monobehaviour = this;
+    public void Initialize(WorldEntity entity)
+    {
+        base.Initialize(entity);
+        needsUpdate = true;
+    }
+
+    public override string GetPopupText()
+    {
+        return string.Format("Tree ({0})", ((TreeEntity)Model).AmountRemaining);
     }
 }
