@@ -17,7 +17,7 @@ public class PersonEntity : AgentEntity
     {
         Position = new Vector3Int(x, y, 0);
         Inventory = new Inventory(20);
-        AgentController = new UserInputAC(this);
+        AgentController = new CollectWoodAC(this);
     }
 
 
@@ -42,7 +42,6 @@ public class PersonEntity : AgentEntity
 
     override public bool Move(Vector3Int direction)
     {
-
         Position += direction;
         Monobehaviour.SetNeedsUpdate();
         return true;
