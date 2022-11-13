@@ -58,39 +58,52 @@ public class UserInputAC : AgentController
 
 public class CollectWoodAC : AgentController
 {
-    private bool started;
-    private Vector3Int nearest_wood;
+    private enum State
+    {
+        FindingWood,
+        MovingToWood,
+        AtWood
+    }
+    private State state;
+    private Vector3Int nearest_wood_loc;
+    private IResourceDepositEntity target_deposit;
 
     public CollectWoodAC(AgentEntity agentEntity) : base(agentEntity) 
     {
-        started = false;
-        nearest_wood = new Vector3Int(-1, -1, -1);
+        state = State.FindingWood;
+        nearest_wood_loc = new Vector3Int(-1, -1, -1);
     }
 
-    private void _Begin(Percept percept)
+    private Vector3Int _FindNearestWood(Percept percept)
     {
         RegionModel region = percept.Region;
-        nearest_wood = region.GetNearestResource(percept.Position, ResourceDepositType.Tree);
-        started = true;
+        nearest_wood_loc = region.GetNearestResourceDeposit(percept.Position, ResourceDepositType.Tree);
+        target_deposit = region.GetResourceAt(nearest_wood_loc);
     }
 
     public override Action DecideNextAction(Percept percept)
     {
-        if (!started) 
+        if (state == State.FindingWood) 
         {
-            _Begin(percept); 
+             _FindNearestWood(percept);
+            state = State.MovingToWood;
         }
-        else
+        if (state == State.MovingToWood)
         {
             List<Vector3Int> nbors = Geometry.GetNeighbors(percept.Position);
-            if (nbors.Contains(nearest_wood))
+            if (nbors.Contains(nearest_wood_loc))
             {
-                started = false;
-                return new WalkAction(agentEntity, new Vector3Int(0, 0, 0));
+                state = State.AtWood;
+            } else
+            {
+                Vector3Int heading_vector = nearest_wood_loc - percept.Position;
+                Vector3Int direction = Geometry.BestDirection(heading_vector);
+                return new WalkAction(agentEntity, direction);
             }
-        }
-        Vector3Int heading_vector = nearest_wood - percept.Position;
-        Vector3Int direction = Geometry.BestDirection(heading_vector);
-        return new WalkAction(agentEntity, direction);
+        if (state == State.AtWood)
+            {
+
+                return new NoAction(agentEntity);
+            }
     }
 }

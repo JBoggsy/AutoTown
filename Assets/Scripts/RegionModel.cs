@@ -194,7 +194,7 @@ public class RegionModel
     /// <param name="depositType">Type of resource deposit to find</param>
     /// <returns>The location of the closest deposit of theg iven type if one exists, otherwise
     /// (-1, -1, -1).</returns>
-    public Vector3Int GetNearestResource(Vector3Int position, ResourceDepositType depositType)
+    public Vector3Int GetNearestResourceDeposit(Vector3Int position, ResourceDepositType depositType)
     {
         Queue<Vector3Int> fringe = new Queue<Vector3Int>();
         HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
