@@ -16,7 +16,7 @@ public abstract class Action
     /// </summary>
     /// <param name="regionModel"></param>
     /// <returns>True if action was successful</returns>
-    public abstract bool ApplyAction(RegionModel regionModel);
+    public abstract bool ExecuteAction(RegionModel regionModel);
 }
 
 public class WalkAction : Action
@@ -31,7 +31,7 @@ public class WalkAction : Action
         Destination = agentEntity.Position + direction;
     }
 
-    public override bool ApplyAction(RegionModel regionModel)
+    public override bool ExecuteAction(RegionModel regionModel)
     {
         if (!regionModel.IsPassable(Destination)) { return false; }
         AgentEntity.Move(Direction);
@@ -47,7 +47,7 @@ public class NoAction : Action
 
     }
 
-    public override bool ApplyAction(RegionModel regionModel)
+    public override bool ExecuteAction(RegionModel regionModel)
     {
         return true;
     }

@@ -83,7 +83,7 @@ public class TownSceneManager : MonoBehaviour
         if (HasSelectedEntity
             && SelectedEntity is PersonMonobehaviour person
             && person.Model is PersonEntity entity
-            && entity.AgentController is UserInputACI controller)
+            && entity.AgentController is UserInputAC controller)
         {
             controller.HandleUserInput(coords);
         }

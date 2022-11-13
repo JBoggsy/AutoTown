@@ -17,7 +17,7 @@ public class PersonEntity : AgentEntity
     {
         Position = new Vector3Int(x, y, 0);
         Inventory = new Inventory(20);
-        AgentController = new UserInputACI(this);
+        AgentController = new UserInputAC(this);
     }
 
 

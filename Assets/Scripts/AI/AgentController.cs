@@ -12,9 +12,9 @@ public abstract class AgentController
     public abstract Action DecideNextAction(Percept percept);
 }
 
-public class RandomWalkACI : AgentController
+public class RandomWalkAC : AgentController
 {
-    public RandomWalkACI(AgentEntity agentEntity) : base(agentEntity) { }
+    public RandomWalkAC(AgentEntity agentEntity) : base(agentEntity) { }
 
     public override Action DecideNextAction(Percept percept)
     {
@@ -24,11 +24,11 @@ public class RandomWalkACI : AgentController
     }
 }
 
-public class UserInputACI : AgentController
+public class UserInputAC : AgentController
 {
     private Action ScheduledAction;
 
-    public UserInputACI(AgentEntity agentEntity) : base(agentEntity) { }
+    public UserInputAC(AgentEntity agentEntity) : base(agentEntity) { }
 
     public override Action DecideNextAction(Percept percept)
     {
