@@ -13,13 +13,37 @@ public static class Geometry
     public static List<Vector3Int> GetNeighbors(Vector3Int origin)
     {
         return new List<Vector3Int>
-    {
-        origin + North,
-        origin + South,
-        origin + East,
-        origin + West
-    };
+        {
+            origin + North,
+            origin + South,
+            origin + East,
+            origin + West
+        };
     }
+
+    public static bool AreNeighbors(Vector3Int a, Vector3Int b)
+    {
+        return GetNeighbors(a).Contains(b);
+    }
+
+    /*
+     * Finds the nearest position to the target from a list of options. Or an arbitrarily far
+     * position if that list is empty.
+     */
+    public static Vector3Int NearestPosition(Vector3Int target, List<Vector3Int> options)
+    {
+        Vector3Int closest_option = new Vector3Int(int.MaxValue, int.MaxValue);
+        foreach (Vector3Int option in options)
+        {
+            if ((target - option).magnitude < (target - closest_option).magnitude)
+            {
+                closest_option = option;
+            }
+        }
+
+        return closest_option;
+    }
+
 
     public static Quaternion QuaternionFromVector2(Vector2 input)
     {
