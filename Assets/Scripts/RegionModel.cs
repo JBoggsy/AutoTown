@@ -246,7 +246,7 @@ public class RegionModel
         }
         foreach (Action action in actions)
         {
-            action.ExecuteAction(this);
+            action.ApplyAction(this);
         }
         // In the future, this is where action conflicts (e.g., movement collisions)
         // should be resolved by evaluating the world state and ensuring it still complies

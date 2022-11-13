@@ -18,7 +18,7 @@ public class TreeEntity : WorldEntity, IResourceDepositEntity
     public int ExtractAmount(int amount)
     {
         int extracted_amount = 0;
-        if (amount >= AmountRemaining)
+        if (amount <= AmountRemaining)
         {
             extracted_amount = amount;
             AmountRemaining = AmountRemaining - amount;

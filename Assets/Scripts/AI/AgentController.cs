@@ -108,7 +108,7 @@ public class CollectWoodAC : AgentController
         }
         if (state == State.AtWood)
         {
-            return new HarvestAction(agentEntity, nearest_wood);
+            return new HarvestAction(agentEntity, nearest_wood_loc);
         }
 
         return new NoAction(agentEntity);

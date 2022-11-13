@@ -18,7 +18,7 @@ public class HarvestAction : Action
         bool result = true;
 
         IResourceDepositEntity deposit = TownSceneManager.Instance.Region.GetResourceAt(Target);
-        if (deposit != null && Geometry.AreNeighbors(Target, AgentEntity.Position) && deposit.AmountRemaining > 0)
+        if (deposit != null && Geometry.Grid.AreNeighbors(Target, AgentEntity.Position) && deposit.AmountRemaining > 0)
         {
             deposit.ExtractAmount(1);
             ItemType item = Constants.ItemFromDeposit(deposit.Type);
