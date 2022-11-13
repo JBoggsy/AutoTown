@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-public abstract class AgentControlInterface
+public abstract class AgentController
 {
     protected AgentEntity agentEntity;
 
-    public AgentControlInterface(AgentEntity agentEntity)
+    public AgentController(AgentEntity agentEntity)
     {
         this.agentEntity = agentEntity;
     }
@@ -12,7 +12,7 @@ public abstract class AgentControlInterface
     public abstract Action DecideNextAction(Percept percept);
 }
 
-public class RandomWalkACI : AgentControlInterface
+public class RandomWalkACI : AgentController
 {
     public RandomWalkACI(AgentEntity agentEntity) : base(agentEntity) { }
 
@@ -24,7 +24,7 @@ public class RandomWalkACI : AgentControlInterface
     }
 }
 
-public class UserInputACI : AgentControlInterface
+public class UserInputACI : AgentController
 {
     private Action ScheduledAction;
 
@@ -55,7 +55,7 @@ public class UserInputACI : AgentControlInterface
     }
 }
 
-public class CollectWood : AgentControlInterface
+public class CollectWood : AgentController
 {
     public CollectWood(AgentEntity agentEntity) : base(agentEntity) { }
 

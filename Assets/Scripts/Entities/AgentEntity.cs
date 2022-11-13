@@ -2,7 +2,7 @@
 
 public abstract class AgentEntity: WorldEntity, IMotileEntity, IInventoryEntity
 {
-    public AgentControlInterface AgentController { get; set; }
+    public AgentController AgentController { get; set; }
 
     public abstract Percept Perceive(RegionModel region);
     public Action DecideNextAction(RegionModel region)
