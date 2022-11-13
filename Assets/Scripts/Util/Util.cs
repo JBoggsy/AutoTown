@@ -6,14 +6,14 @@ public static class Util
 {
 
     /*
-     * Find an object at the cursor position in world space which has a component of the specified
-     * generic type. Returns that component from that object. Or null if the criteria are not met.
-     * 
-     * Only considers objects with collider components. Priority between overlapping objects is not
-     * defined.
-     * 
-     * Uses the main camera.
-     */
+        * Find an object at the cursor position in world space which has a component of the specified
+        * generic type. Returns that component from that object. Or null if the criteria are not met.
+        * 
+        * Only considers objects with collider components. Priority between overlapping objects is not
+        * defined.
+        * 
+        * Uses the main camera.
+        */
     public static T GetObjectUnderCursor<T>() where T : Component
     {
         Vector2 mouse_position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -33,11 +33,11 @@ public static class Util
     }
 
     /*
-     * Sample perlin noise at multiple frequencies specified in <fourier_series>. This is sometimes
-     * refered to as "fractal noise".
-     * 
-     * param <offset> acts as a deterministic seed.
-     */
+        * Sample perlin noise at multiple frequencies specified in <fourier_series>. This is sometimes
+        * refered to as "fractal noise".
+        * 
+        * param <offset> acts as a deterministic seed.
+        */
     public static float PerlinNoiseMultisample(float x, float y, List<(float freq, float mag)> fourier_series, float offset)
     {
         float sample_acc = 0f;
@@ -55,9 +55,9 @@ public static class Util
     public static int RandomInt(int upper_bound)
     {
         /*
-         * All properties and methods of UnityEngine.Random have an inclusive upper bound. System.Random does not have
-         * this issue but I want to stick to using one.
-         */
+            * All properties and methods of UnityEngine.Random have an inclusive upper bound. System.Random does not have
+            * this issue but I want to stick to using one.
+            */
         float sample = upper_bound * Random.value;
         return sample == upper_bound ? 0 : Mathf.FloorToInt(sample);
     }
@@ -73,37 +73,5 @@ public static class Util
     public static T RandomElement<T>(System.Array array)
     {
         return (T)array.GetValue(RandomInt(array.Length));
-    }
-
-    public static Quaternion QuaternionFromVector2(Vector2 input)
-    {
-        float angle = Vector2.SignedAngle(Vector2.right, input);
-        return Quaternion.Euler(0, 0, angle);
-    }
-
-    public static Vector3Int BestDirection(Vector2 v)
-    {
-        if (Mathf.Abs(v.x) > Mathf.Abs(v.y))
-        {
-            if (v.x > 0)
-            {
-                return Direction.East;
-            }
-            else
-            {
-                return Direction.West;
-            }
-        }
-        else
-        {
-            if (v.y > 0)
-            {
-                return Direction.North;
-            }
-            else
-            {
-                return Direction.South;
-            }
-        }
     }
 }

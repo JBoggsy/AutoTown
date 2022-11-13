@@ -32,6 +32,7 @@ public class RegionModel
     // Resources layer
     private int nextResourceDepositID = 0;
     private Dictionary<int, IResourceDepositEntity> resourceDepositLookup = new Dictionary<int, IResourceDepositEntity>();
+    private Dictionary<Vector3Int, int> resourceDepositMap = new Dictionary<Vector3Int, int>();
 
     // Persons layer
     private int nextPersonID = 0;
@@ -132,6 +133,7 @@ public class RegionModel
                 return null;
         }
         resourceDepositLookup.Add(nextResourceDepositID, newResourceDeposit);
+        resourceDepositMap.Add(position, nextResourceDepositID);
         passabilityLookup[position] = false;
         manager.SpawnResourceDeposit(newResourceDeposit, nextResourceDepositID);
         nextResourceDepositID++;
@@ -179,6 +181,42 @@ public class RegionModel
             passabilityLookup.Add(position, true);
         }
         return passabilityLookup[position];
+    }
+
+    /// <summary>
+    /// Provides the location of the nearest resource to `position` of the given `depositType`.
+    /// </summary>
+    /// <param name="position">Location from which to find closest resource</param>
+    /// <param name="depositType">Type of resource deposit to find</param>
+    /// <returns>The location of the closest deposit of theg iven type if one exists, otherwise
+    /// (-1, -1, -1).</returns>
+    public Vector3Int GetNearestResource(Vector3Int position, ResourceDepositType depositType)
+    {
+        Stack<Vector3Int> fringe = new Stack<Vector3Int>();
+        fringe.Push(position);
+
+        Vector3Int active_position = new Vector3Int(-1, -1, -1);
+        bool resource_found = false;
+        while (!resource_found && fringe.Count > 0)
+        {
+            active_position = fringe.Pop();
+            if (resourceDepositMap.ContainsKey(active_position) && resourceDepositLookup[resourceDepositMap[active_position]].Type == depositType)
+            {
+                resource_found = true;
+            } else
+            {
+                foreach (Vector3Int dir in Geometry.All)
+                {
+                    fringe.Push(active_position + dir);
+                }
+            }
+        }
+        if (!resource_found)
+        {
+            active_position = new Vector3Int(-1, -1, -1);
+        }
+
+        return active_position;
     }
 
     // SIMULATION

@@ -18,7 +18,7 @@ public class RandomWalkACI : AgentControlInterface
 
     public override Action DecideNextAction(Percept percept)
     {
-        Vector3Int direction = Direction.Random;
+        Vector3Int direction = Util.RandomElement(Geometry.All);
         Action next_action = new WalkAction(agentEntity, direction);
         return next_action;
     }
@@ -50,7 +50,21 @@ public class UserInputACI : AgentControlInterface
     public void HandleUserInput(Vector2Int coords)
     {
         Vector2 v = coords - (Vector2Int)agentEntity.Position;
-        Vector3Int direction = Util.BestDirection(v);
+        Vector3Int direction = Geometry.BestDirection(v);
         ScheduledAction = new WalkAction(agentEntity, direction);
+    }
+}
+
+public class CollectWood : AgentControlInterface
+{
+    public CollectWood(AgentEntity agentEntity) : base(agentEntity) { }
+
+    public override Action DecideNextAction(Percept percept)
+    {
+        RegionModel region = percept.Region;
+        Vector3Int nearest_wood = region.GetNearestResource(percept.Position, ResourceDepositType.Tree);
+        if (nearest_wood.x == -1) { return new WalkAction(agentEntity, new Vector3Int(0, 0, 0)); }
+
+
     }
 }
