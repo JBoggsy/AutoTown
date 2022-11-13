@@ -19,7 +19,7 @@ public class RandomWalkAC : AgentController
 
     public override Action DecideNextAction(Percept percept)
     {
-        Vector3Int direction = Util.RandomElement(Geometry.AllDirections);
+        Vector3Int direction = Util.RandomElement(Geometry.Grid.AllDirections);
         Action next_action = new WalkAction(agentEntity, direction);
         return next_action;
     }
@@ -51,7 +51,7 @@ public class UserInputAC : AgentController
     public void HandleUserInput(Vector2Int coords)
     {
         Vector2 v = coords - (Vector2Int)agentEntity.Position;
-        Vector3Int direction = Geometry.BestDirection(v);
+        Vector3Int direction = Geometry.Grid.BestDirection(v);
         ScheduledAction = new WalkAction(agentEntity, direction);
     }
 }
@@ -90,7 +90,7 @@ public class CollectWoodAC : AgentController
         }
         if (state == State.MovingToWood)
         {
-            List<Vector3Int> nbors = Geometry.GetNeighbors(percept.Position);
+            List<Vector3Int> nbors = Geometry.Grid.GetNeighbors(percept.Position);
             if (nbors.Contains(nearest_wood_loc))
             {
                 state = State.AtWood;
@@ -98,7 +98,7 @@ public class CollectWoodAC : AgentController
             else
             {
                 Vector3Int heading_vector = nearest_wood_loc - percept.Position;
-                Vector3Int direction = Geometry.BestDirection(heading_vector);
+                Vector3Int direction = Geometry.Grid.BestDirection(heading_vector);
                 return new WalkAction(agentEntity, direction);
             }
         }

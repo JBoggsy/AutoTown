@@ -218,7 +218,7 @@ public class RegionModel
             }
             else
             {
-                foreach (Vector3Int dir in Geometry.AllDirections)
+                foreach (Vector3Int dir in Geometry.Grid.AllDirections)
                 {
                     Vector3Int nbor = active_position + dir;
                     if (RegionBox.Contains(new Vector2Int(nbor.x, nbor.y)) && !visited.Contains(nbor))
