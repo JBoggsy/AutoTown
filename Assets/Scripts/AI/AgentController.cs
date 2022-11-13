@@ -27,32 +27,36 @@ public class RandomWalkAC : AgentController
 
 public class UserInputAC : AgentController
 {
-    private Action ScheduledAction;
+    private bool HasActivity;
+    private Vector3Int Destination;
 
     public UserInputAC(AgentEntity agentEntity) : base(agentEntity) { }
 
     public override Action DecideNextAction(Percept percept)
     {
-        Action result;
+        Action action = new NoAction(agentEntity);
 
-        if (ScheduledAction != null)
+        if (HasActivity)
         {
-            result = ScheduledAction;
-            ScheduledAction = null;
-        }
-        else
-        {
-            result = new NoAction(agentEntity);
+            if (agentEntity.Position == Destination)
+            {
+                HasActivity = false;
+            }
+            else
+            {
+                Vector3 v = Destination - agentEntity.Position;
+                Vector3Int direction = Geometry.Grid.BestDirection(v);
+                action = new WalkAction(agentEntity, direction);
+            }
         }
 
-        return result;
+        return action;
     }
 
     public void HandleUserInput(Vector2Int coords)
     {
-        Vector2 v = coords - (Vector2Int)agentEntity.Position;
-        Vector3Int direction = Geometry.Grid.BestDirection(v);
-        ScheduledAction = new WalkAction(agentEntity, direction);
+        Destination = (Vector3Int)coords;
+        HasActivity = true;
     }
 }
 
@@ -104,7 +108,7 @@ public class CollectWoodAC : AgentController
         }
         if (state == State.AtWood)
         {
-            return new NoAction(agentEntity);
+            return new HarvestAction(agentEntity, nearest_wood);
         }
 
         return new NoAction(agentEntity);

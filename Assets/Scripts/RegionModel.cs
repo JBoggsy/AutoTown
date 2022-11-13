@@ -14,17 +14,17 @@ public class RegionModel
 
     // UNITY ACCESSORS
     //////////////////
-    
+
     private TownSceneManager manager;
 
     // SIMULATION PROPERTIES
     ////////////////////////
-    
+
     private bool runningSimulation;
 
     // MAP DATA
     ///////////
-        
+
     public int Height { get; private set; }
     public int Width { get; private set; }
     public RectInt RegionBox { get; private set; }
@@ -34,16 +34,15 @@ public class RegionModel
 
     // Resources layer
     private int nextResourceDepositID = 0;
-    private Dictionary<int, IResourceDepositEntity> resourceDepositLookup = new Dictionary<int, IResourceDepositEntity>();
-    private Dictionary<Vector3Int, int> resourceDepositMap = new Dictionary<Vector3Int, int>();
+    private Dictionary<Vector3Int, IResourceDepositEntity> resourceDeposits = new Dictionary<Vector3Int, IResourceDepositEntity>();
 
     // Persons layer
     private int nextPersonID = 0;
-    private Dictionary<int, PersonEntity> personLookup = new Dictionary<int,PersonEntity>();
+    private Dictionary<int, PersonEntity> personLookup = new Dictionary<int, PersonEntity>();
 
     // Buildings layer
     private int nextBuildingID = 0;
-    private Dictionary<int, BuildingEntity> buildingLookup = new Dictionary<int,BuildingEntity>();
+    private Dictionary<int, BuildingEntity> buildingLookup = new Dictionary<int, BuildingEntity>();
 
     // Passability layer
     private Dictionary<Vector3Int, bool> passabilityLookup = new Dictionary<Vector3Int, bool>();
@@ -136,8 +135,7 @@ public class RegionModel
             default:
                 return null;
         }
-        resourceDepositLookup.Add(nextResourceDepositID, newResourceDeposit);
-        resourceDepositMap.Add(position, nextResourceDepositID);
+        resourceDeposits.Add(position, newResourceDeposit);
         passabilityLookup[position] = false;
         manager.SpawnResourceDeposit(newResourceDeposit, nextResourceDepositID);
         nextResourceDepositID++;
@@ -177,9 +175,9 @@ public class RegionModel
 
     public IResourceDepositEntity GetResourceAt(Vector3Int position)
     {
-        return resourceDepositLookup[resourceDepositMap[position]];
+        return resourceDeposits[position];
     }
-    
+
     /// <summary>
     /// Indicate whether the specified position is passable or not.
     /// </summary>
@@ -212,7 +210,7 @@ public class RegionModel
             active_position = fringe.Dequeue();
             visited.Add(active_position);
 
-            if (resourceDepositMap.ContainsKey(active_position) && resourceDepositLookup[resourceDepositMap[active_position]].Type == depositType)
+            if (resourceDeposits.ContainsKey(active_position) && resourceDeposits[active_position].Type == depositType)
             {
                 resource_found = true;
             }

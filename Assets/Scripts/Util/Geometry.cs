@@ -11,7 +11,28 @@ namespace Geometry
         public static readonly Vector3Int East = new Vector3Int(1, 0, 0);
         public static readonly Vector3Int West = new Vector3Int(-1, 0, 0);
         public static readonly List<Vector3Int> AllDirections = new List<Vector3Int> { North, South, East, West };
+    public static bool AreNeighbors(Vector3Int a, Vector3Int b)
+    {
+        return GetNeighbors(a).Contains(b);
+    }
 
+    /*
+     * Finds the nearest position to the target from a list of options. Or an arbitrarily far
+     * position if that list is empty.
+     */
+    public static Vector3Int NearestPosition(Vector3Int target, List<Vector3Int> options)
+    {
+        Vector3Int closest_option = new Vector3Int(int.MaxValue, int.MaxValue);
+        foreach (Vector3Int option in options)
+        {
+            if ((target - option).magnitude < (target - closest_option).magnitude)
+            {
+                closest_option = option;
+            }
+        }
+
+        return closest_option;
+    }
         public static List<Vector3Int> GetNeighbors(Vector3Int origin)
         {
             List<Vector3Int> neighbors = new List<Vector3Int> ();
@@ -21,6 +42,7 @@ namespace Geometry
             }
             return neighbors;
         }
+        
 
         public static Vector3Int BestDirection(Vector3 v)
         {

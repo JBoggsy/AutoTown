@@ -32,7 +32,6 @@ public class TownSceneManager : MonoBehaviour
         Instance = this;
         Region = new RegionModel(200, 200);
         simulationCoroutine = Simulate();
-        print("Created TownSceneManager");
     }
 
     public void Start ()
@@ -46,6 +45,7 @@ public class TownSceneManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             ClearSelection();
+
             WorldEntityMonoBehaviour entity = Util.GetObjectUnderCursor<WorldEntityMonoBehaviour>();
             if (entity != null)
             {
@@ -56,28 +56,20 @@ public class TownSceneManager : MonoBehaviour
         // RIGHT CLICK
         if (Input.GetMouseButtonDown(1))
         {
-            WorldEntityMonoBehaviour entity = Util.GetObjectUnderCursor<WorldEntityMonoBehaviour>();
-            if (entity != null)
-            {
-                if (entity.Model == null)
-                {
-                    Debug.Log("well there we go then");
-                }
-                Input_Command((Vector2Int)entity.Model.Position);
-            }
+            Vector2 input = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2Int coords = new Vector2Int(Mathf.FloorToInt(input.x - 0.5f), Mathf.FloorToInt(input.y - 0.5f));
+            Input_Command(coords);
         }
     }
 
+    // Handle a 'Select' type input from the user (left click)
     private void Input_Select(WorldEntityMonoBehaviour entity)
     {
         SelectedEntity = entity;
-        if (SelectedEntity == null)
-        {
-            Debug.Log("why is this");
-        }
         TownUIManager.ShowPopup(SelectedEntity.GetPopupText(), SelectedEntity.transform);
     }
 
+    // Handle a 'Command' type input from the user (right click)
     private void Input_Command(Vector2Int coords)
     {
         if (HasSelectedEntity
