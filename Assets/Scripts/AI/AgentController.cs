@@ -74,7 +74,7 @@ public class CollectWoodAC : AgentController
         nearest_wood_loc = new Vector3Int(-1, -1, -1);
     }
 
-    private Vector3Int _FindNearestWood(Percept percept)
+    private void _FindNearestWood(Percept percept)
     {
         RegionModel region = percept.Region;
         nearest_wood_loc = region.GetNearestResourceDeposit(percept.Position, ResourceDepositType.Tree);
@@ -83,9 +83,9 @@ public class CollectWoodAC : AgentController
 
     public override Action DecideNextAction(Percept percept)
     {
-        if (state == State.FindingWood) 
+        if (state == State.FindingWood)
         {
-             _FindNearestWood(percept);
+            _FindNearestWood(percept);
             state = State.MovingToWood;
         }
         if (state == State.MovingToWood)
@@ -94,16 +94,19 @@ public class CollectWoodAC : AgentController
             if (nbors.Contains(nearest_wood_loc))
             {
                 state = State.AtWood;
-            } else
+            }
+            else
             {
                 Vector3Int heading_vector = nearest_wood_loc - percept.Position;
                 Vector3Int direction = Geometry.BestDirection(heading_vector);
                 return new WalkAction(agentEntity, direction);
             }
+        }
         if (state == State.AtWood)
-            {
+        {
+            return new NoAction(agentEntity);
+        }
 
-                return new NoAction(agentEntity);
-            }
+        return new NoAction(agentEntity);
     }
 }

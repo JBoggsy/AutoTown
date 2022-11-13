@@ -174,6 +174,11 @@ public class RegionModel
     {
         return mapData_Terrain[position.y, position.x];
     }
+
+    public IResourceDepositEntity GetResourceAt(Vector3Int position)
+    {
+        return resourceDepositLookup[resourceDepositMap[position]];
+    }
     
     /// <summary>
     /// Indicate whether the specified position is passable or not.

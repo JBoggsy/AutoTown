@@ -43,7 +43,6 @@ public class PersonEntity : AgentEntity
     override public bool Move(Vector3Int direction)
     {
         Position += direction;
-        Debug.Log(String.Format("Moving to {0}", Position));
         Monobehaviour.SetNeedsUpdate();
         return true;
     }
