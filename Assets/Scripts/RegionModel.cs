@@ -1,6 +1,8 @@
 //using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 
@@ -25,6 +27,7 @@ public class RegionModel
         
     public int Height { get; private set; }
     public int Width { get; private set; }
+    public RectInt RegionBox { get; private set; }
 
     // Terrain layer
     private TerrainType[,] mapData_Terrain;
@@ -64,8 +67,9 @@ public class RegionModel
 
         Width = width;
         Height = height;
+        RegionBox = new RectInt(0, 0, Width, Height);
         
-        GenerateTerrain(seed : (int)(Random.value * int.MaxValue));
+        GenerateTerrain(seed : (int)(UnityEngine.Random.value * int.MaxValue));
         CreatePerson(new Vector3Int(Width / 2, Height / 2, 0));
     }
 
@@ -192,22 +196,31 @@ public class RegionModel
     /// (-1, -1, -1).</returns>
     public Vector3Int GetNearestResource(Vector3Int position, ResourceDepositType depositType)
     {
-        Stack<Vector3Int> fringe = new Stack<Vector3Int>();
-        fringe.Push(position);
+        Queue<Vector3Int> fringe = new Queue<Vector3Int>();
+        HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
+        fringe.Enqueue(position);
 
         Vector3Int active_position = new Vector3Int(-1, -1, -1);
         bool resource_found = false;
         while (!resource_found && fringe.Count > 0)
         {
-            active_position = fringe.Pop();
+            active_position = fringe.Dequeue();
+            visited.Add(active_position);
+
             if (resourceDepositMap.ContainsKey(active_position) && resourceDepositLookup[resourceDepositMap[active_position]].Type == depositType)
             {
                 resource_found = true;
-            } else
+            }
+            else
             {
                 foreach (Vector3Int dir in Geometry.AllDirections)
                 {
-                    fringe.Push(active_position + dir);
+                    Vector3Int nbor = active_position + dir;
+                    if (RegionBox.Contains(new Vector2Int(nbor.x, nbor.y)) && !visited.Contains(nbor))
+                    {
+                        fringe.Enqueue(nbor);
+                        visited.Add(nbor);
+                    }
                 }
             }
         }
@@ -215,7 +228,6 @@ public class RegionModel
         {
             active_position = new Vector3Int(-1, -1, -1);
         }
-
         return active_position;
     }
 

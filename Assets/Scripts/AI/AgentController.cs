@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class AgentController
 {
@@ -55,16 +56,41 @@ public class UserInputAC : AgentController
     }
 }
 
-public class CollectWood : AgentController
+public class CollectWoodAC : AgentController
 {
-    public CollectWood(AgentEntity agentEntity) : base(agentEntity) { }
+    private bool started;
+    private Vector3Int nearest_wood;
+
+    public CollectWoodAC(AgentEntity agentEntity) : base(agentEntity) 
+    {
+        started = false;
+        nearest_wood = new Vector3Int(-1, -1, -1);
+    }
+
+    private void _Begin(Percept percept)
+    {
+        RegionModel region = percept.Region;
+        nearest_wood = region.GetNearestResource(percept.Position, ResourceDepositType.Tree);
+        started = true;
+    }
 
     public override Action DecideNextAction(Percept percept)
     {
-        RegionModel region = percept.Region;
-        Vector3Int nearest_wood = region.GetNearestResource(percept.Position, ResourceDepositType.Tree);
-        if (nearest_wood.x == -1) { return new WalkAction(agentEntity, new Vector3Int(0, 0, 0)); }
-
-
+        if (!started) 
+        {
+            _Begin(percept); 
+        }
+        else
+        {
+            List<Vector3Int> nbors = Geometry.GetNeighbors(percept.Position);
+            if (nbors.Contains(nearest_wood))
+            {
+                started = false;
+                return new WalkAction(agentEntity, new Vector3Int(0, 0, 0));
+            }
+        }
+        Vector3Int heading_vector = nearest_wood - percept.Position;
+        Vector3Int direction = Geometry.BestDirection(heading_vector);
+        return new WalkAction(agentEntity, direction);
     }
 }

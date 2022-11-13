@@ -27,7 +27,7 @@ public static class Geometry
         return Quaternion.Euler(0, 0, angle);
     }
 
-    public static Vector3Int BestDirection(Vector2 v)
+    public static Vector3Int BestDirection(Vector3 v)
     {
         if (Mathf.Abs(v.x) > Mathf.Abs(v.y))
         {
