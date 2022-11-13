@@ -31,3 +31,16 @@ public enum BuildingType
 {
     Town_Center
 }
+
+public static class Constants
+{
+    public static ItemType ItemFromDeposit(ResourceDepositType deposit)
+    {
+        return deposit switch
+        {
+            ResourceDepositType.Tree => ItemType.Wood,
+            ResourceDepositType.Rock => ItemType.Stone,
+            _ => default
+        };
+    }
+}
