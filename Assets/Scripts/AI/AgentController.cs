@@ -65,12 +65,23 @@ public class CollectWood : AgentController
 
     public override Action DecideNextAction(Percept percept)
     {
-        return null;
-        /*
+        Action action = new NoAction(agentEntity);
+
         RegionModel region = percept.Region;
         Vector3Int nearest_wood = region.GetNearestResource(percept.Position, ResourceDepositType.Tree);
-        if (nearest_wood.x == -1) { return new WalkAction(agentEntity, new Vector3Int(0, 0, 0)); }
-        */
+        Vector3Int nearest_access = Geometry.NearestPosition(percept.Position, Geometry.GetNeighbors(nearest_wood));
 
+        if (nearest_access != percept.Position)
+        {
+            Vector3 v = nearest_access - agentEntity.Position;
+            Vector3Int direction = Geometry.BestDirection(v);
+            action = new WalkAction(agentEntity, direction);
+        }
+        else
+        {
+            action = new HarvestAction(agentEntity, nearest_wood);
+        }
+
+        return action;
     }
 }
