@@ -486,7 +486,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -754,7 +753,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WorldCanvas: {fileID: 139802583}
   ScreenCanvas: {fileID: 1424580874}
-  PopupPrefab: {fileID: 4557538203456574568, guid: 7e920e693042a914b8e730d8da605ab6, type: 3}
+  PopupPrefab: {fileID: 7914854872456403703, guid: b9d71dcf378add24288fafc3fc19f3f8, type: 3}
 --- !u!4 &1440242671
 Transform:
   m_ObjectHideFlags: 0

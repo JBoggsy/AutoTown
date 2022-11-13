@@ -1,10 +1,8 @@
 using UnityEngine;
 
-public class TreeEntity : IResourceDepositEntity
+public class TreeEntity : WorldEntity, IResourceDepositEntity
 {
     public TreeMonobehaviour Monobehaviour { protected get; set; }
-
-    public Vector3Int Position { get; protected set; }
 
     public ResourceDepositType Type { get; protected set; }
     public int AmountRemaining { get; protected set; }
@@ -39,5 +37,20 @@ public class TreeEntity : IResourceDepositEntity
     public void DestroyDeposit()
     {
         return;
+    }
+
+    public override bool ApplyDamage(float damage)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override bool ApplyHeal(float heal)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Destroy()
+    {
+        throw new System.NotImplementedException();
     }
 }

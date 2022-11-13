@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class RockMonobehaviour : WorldEntityMonoBehaviour
 {
-    public RockEntity Model { get; private set; }
-
     private bool needsUpdate = true;
 
     void Update()
@@ -17,9 +15,8 @@ public class RockMonobehaviour : WorldEntityMonoBehaviour
         }
     }
 
-    public void SetModel(RockEntity model)
-    { 
-        Model = model; 
-        Model.Monobehaviour = this;
+    public override string GetPopupText()
+    {
+        return string.Format("Rock ({0})", ((RockEntity)Model).AmountRemaining);
     }
 }

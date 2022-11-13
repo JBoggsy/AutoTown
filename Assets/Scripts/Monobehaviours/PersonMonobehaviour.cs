@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class PersonMonobehaviour : WorldEntityMonoBehaviour
 {
-    public PersonEntity Model { get; protected set; }
-
     private bool needsUpdate = true;
 
     void Update()
@@ -20,9 +18,14 @@ public class PersonMonobehaviour : WorldEntityMonoBehaviour
 
     public void SetNeedsUpdate() { needsUpdate = true; }
 
-    public void SetModel(PersonEntity model)
+    public void Initialize(PersonEntity model)
     {
-        Model = model;
-        Model.Monobehaviour = this;
+        base.Initialize(model);
+        model.Monobehaviour = this;
+    }
+
+    public override string GetPopupText()
+    {
+        return string.Format("Ted");
     }
 }

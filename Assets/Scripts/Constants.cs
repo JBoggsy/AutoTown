@@ -39,4 +39,5 @@ public static class Direction
     public static readonly Vector3Int East = new Vector3Int(1, 0, 0);
     public static readonly Vector3Int West = new Vector3Int(-1, 0, 0);
     public static readonly List<Vector3Int> All = new List<Vector3Int>{ North, South, East, West };
+    public static Vector3Int Random { get { return Util.RandomElement(All); } }
 }
