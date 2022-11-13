@@ -18,7 +18,7 @@ public class RandomWalkACI : AgentControlInterface
 
     public override Action DecideNextAction(Percept percept)
     {
-        Vector3Int direction = Util.RandomElement(Geometry.All);
+        Vector3Int direction = Util.RandomElement(Geometry.AllDirections);
         Action next_action = new WalkAction(agentEntity, direction);
         return next_action;
     }

@@ -55,7 +55,7 @@ public static class Util
     public static int RandomInt(int upper_bound)
     {
         /*
-            * All properties and methods of UnityEngine.Random have an inclusive upper bound. System.Random does not have
+            * AllDirections properties and methods of UnityEngine.Random have an inclusive upper bound. System.Random does not have
             * this issue but I want to stick to using one.
             */
         float sample = upper_bound * Random.value;

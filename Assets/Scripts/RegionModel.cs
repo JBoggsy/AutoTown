@@ -205,7 +205,7 @@ public class RegionModel
                 resource_found = true;
             } else
             {
-                foreach (Vector3Int dir in Geometry.All)
+                foreach (Vector3Int dir in Geometry.AllDirections)
                 {
                     fringe.Push(active_position + dir);
                 }
