@@ -34,7 +34,7 @@ public class RegionModel
 
     // Resources layer
     private int nextResourceDepositID = 0;
-    private Dictionary<Vector3Int, IResourceDepositEntity> resourceDeposits = new Dictionary<Vector3Int, IResourceDepositEntity>();
+    private Dictionary<Vector3Int, ResourceDepositEntity> resourceDeposits = new Dictionary<Vector3Int, ResourceDepositEntity>();
 
     // Persons layer
     private int nextPersonID = 0;
@@ -100,7 +100,7 @@ public class RegionModel
     /// <returns></returns>
     public PersonEntity CreatePerson(Vector3Int position)
     {
-        PersonEntity newPerson = new PersonEntity(position.x, position.y);
+        PersonEntity newPerson = new PersonEntity(this, position.x, position.y);
         personLookup.Add(nextPersonID, newPerson);
         manager.SpawnPerson(newPerson, nextPersonID);
         nextPersonID++;
@@ -121,16 +121,16 @@ public class RegionModel
     /// <param name="position">The X,Y coordinate of the deposit (Z should always be 0).</param>
     /// <param name="type">The type of the deposit.</param>
     /// <returns></returns>
-    public IResourceDepositEntity CreateResourceDeposit(int amount, Vector3Int position, ResourceDepositType type)
+    public ResourceDepositEntity CreateResourceDeposit(int amount, Vector3Int position, ResourceDepositType type)
     {
-        IResourceDepositEntity newResourceDeposit;
+        ResourceDepositEntity newResourceDeposit;
         switch (type)
         {
             case ResourceDepositType.Tree:
-                newResourceDeposit = new TreeEntity(amount, position.x, position.y);
+                newResourceDeposit = new TreeEntity(this, amount, position.x, position.y);
                 break;
             case ResourceDepositType.Rock:
-                newResourceDeposit = new RockEntity(amount, position.x, position.y);
+                newResourceDeposit = new RockEntity(this, amount, position.x, position.y);
                 break;
             default:
                 return null;
@@ -142,13 +142,19 @@ public class RegionModel
         return newResourceDeposit;
     }
 
+    public void DestroyResourceDeposit(Vector3Int position)
+    {
+        resourceDeposits.Remove(position);
+        passabilityLookup[position] = true;
+    }
+
     public BuildingEntity CreateBuilding(Vector3Int position, BuildingType type)
     {
         BuildingEntity newBuilding;
         switch (type)
         {
             case BuildingType.Town_Center:
-                newBuilding = new TownCenterEntity(position.x, position.y);
+                newBuilding = new TownCenterEntity(this, position.x, position.y);
                 break;
             default:
                 return null;
@@ -173,9 +179,12 @@ public class RegionModel
         return mapData_Terrain[position.y, position.x];
     }
 
-    public IResourceDepositEntity GetResourceAt(Vector3Int position)
+    public ResourceDepositEntity GetResourceAt(Vector3Int position)
     {
-        return resourceDeposits[position];
+        ResourceDepositEntity ret_deposit;
+        bool success = resourceDeposits.TryGetValue(position, out ret_deposit);
+        if (success) { return ret_deposit; }
+        else { return null; }
     }
 
     /// <summary>

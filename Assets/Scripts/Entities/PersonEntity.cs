@@ -13,7 +13,7 @@ public class PersonEntity : AgentEntity
     public int Energy { get; protected set; }
     protected Inventory Inventory { get; set; }
 
-    public PersonEntity(int x, int y)
+    public PersonEntity(RegionModel region, int x, int y) : base(region)
     {
         Position = new Vector3Int(x, y, 0);
         Inventory = new Inventory(20);

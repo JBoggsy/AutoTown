@@ -4,6 +4,11 @@ public abstract class AgentEntity: WorldEntity, IMotileEntity, IInventoryEntity
 {
     public AgentController AgentController { get; set; }
 
+    public AgentEntity(RegionModel region) : base(region)
+    {
+
+    }
+
     public abstract Percept Perceive(RegionModel region);
     public Action DecideNextAction(RegionModel region)
     {

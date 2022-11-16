@@ -69,24 +69,28 @@ public class CollectWoodAC : AgentController
         AtWood
     }
     private State state;
-    private Vector3Int nearest_wood_loc;
-    private IResourceDepositEntity target_deposit;
+    private Vector3Int nearestWoodLoc;
+    private ResourceDepositEntity targetDeposit;
+    private Action previousAction;
 
     public CollectWoodAC(AgentEntity agentEntity) : base(agentEntity) 
     {
         state = State.FindingWood;
-        nearest_wood_loc = new Vector3Int(-1, -1, -1);
+        nearestWoodLoc = new Vector3Int(-1, -1, -1);
+        previousAction = new NoAction(agentEntity);
     }
 
     private void _FindNearestWood(Percept percept)
     {
         RegionModel region = percept.Region;
-        nearest_wood_loc = region.GetNearestResourceDeposit(percept.Position, ResourceDepositType.Tree);
-        target_deposit = region.GetResourceAt(nearest_wood_loc);
+        nearestWoodLoc = region.GetNearestResourceDeposit(percept.Position, ResourceDepositType.Tree);
+        targetDeposit = region.GetResourceAt(nearestWoodLoc);
     }
 
     public override Action DecideNextAction(Percept percept)
     {
+        Debug.Log(string.Format("State: {0} | Last action name: {0}", state, previousAction.GetName()));
+        Action next_action = new NoAction(agentEntity);
         if (state == State.FindingWood)
         {
             _FindNearestWood(percept);
@@ -95,22 +99,29 @@ public class CollectWoodAC : AgentController
         if (state == State.MovingToWood)
         {
             List<Vector3Int> nbors = Geometry.Grid.GetNeighbors(percept.Position);
-            if (nbors.Contains(nearest_wood_loc))
+            if (nbors.Contains(nearestWoodLoc))
             {
                 state = State.AtWood;
             }
             else
             {
-                Vector3Int heading_vector = nearest_wood_loc - percept.Position;
+                Vector3Int heading_vector = nearestWoodLoc - percept.Position;
                 Vector3Int direction = Geometry.Grid.BestDirection(heading_vector);
-                return new WalkAction(agentEntity, direction);
+                next_action = new WalkAction(agentEntity, direction);
             }
         }
         if (state == State.AtWood)
         {
-            return new HarvestAction(agentEntity, nearest_wood_loc);
+            if (previousAction.GetName().Equals("Walk") || previousAction.Status.Equals("success"))
+            {
+                next_action = new HarvestAction(agentEntity, nearestWoodLoc, 10);
+            } else
+            {
+                state = State.FindingWood;
+            }
         }
 
-        return new NoAction(agentEntity);
+        previousAction = next_action;
+        return next_action;
     }
 }

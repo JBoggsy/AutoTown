@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class NoAction : Action
 {
-    public new const string Name = "NoAction";
-
     public NoAction(AgentEntity agentEntity) : base(agentEntity)
     {
-
+        this.name = "NoAction";
+        this.Status = "success";
     }
 
     public override bool ApplyAction(RegionModel regionModel)

@@ -2,13 +2,20 @@
 
 public abstract class Action
 {
-    public const string Name = "Action";
+    protected string name = "Action";
 
     public AgentEntity AgentEntity { get; protected set; }
+    public string Status { get; protected set; }
 
     public Action(AgentEntity agentEntity)
     {
         AgentEntity = agentEntity;
+        Status = "not started";
+    }
+
+    public string GetName()
+    {
+        return name;
     }
 
     /// <summary>

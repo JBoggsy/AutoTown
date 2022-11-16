@@ -92,9 +92,10 @@ public class TownSceneManager : MonoBehaviour
         GameObject newPersonGameObject = GameObject.Instantiate(PersonPrefab);
         PersonGameObjectsLookup.Add(ID, newPersonGameObject);
         newPersonGameObject.GetComponent<PersonMonobehaviour>().Initialize(person);
+        person.SetGameObject(newPersonGameObject);
     }
 
-    public void SpawnResourceDeposit(IResourceDepositEntity deposit, int ID)
+    public void SpawnResourceDeposit(ResourceDepositEntity deposit, int ID)
     {
         GameObject newResourceDepositGameObject;
         switch (deposit.Type)
@@ -109,7 +110,10 @@ public class TownSceneManager : MonoBehaviour
                 ResourceDepositGameObjectsLookup.Add(ID, newResourceDepositGameObject);
                 newResourceDepositGameObject.GetComponent<RockMonobehaviour>().Initialize((RockEntity)deposit);
                 break;
+            default:
+                return;
         }
+        deposit.SetGameObject(newResourceDepositGameObject);
     }
 
     public void SpawnBuilding(BuildingEntity building, int ID)

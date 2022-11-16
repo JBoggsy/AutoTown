@@ -1,21 +1,16 @@
 ﻿using UnityEngine;
 
-public class RockEntity : WorldEntity, IResourceDepositEntity
+public class RockEntity : ResourceDepositEntity
 {
-    public RockMonobehaviour Monobehaviour { protected get; set; }
-
-    public ResourceDepositType Type { get; protected set; }
-    public int AmountRemaining { get; protected set; }
-
     // PUBLIC METHODS
-    public RockEntity(int amount, int x, int y)
+    public RockEntity(RegionModel region, int amount, int x, int y) : base(region)
     {
         Type = ResourceDepositType.Rock;
         AmountRemaining = amount;
         Position = new Vector3Int(x, y, 0);
     }
     
-    public int ExtractAmount(int amount)
+    public new int ExtractAmount(int amount)
     {
         int extracted_amount = 0;
         if (amount >= AmountRemaining)
@@ -29,14 +24,9 @@ public class RockEntity : WorldEntity, IResourceDepositEntity
         }
         if (AmountRemaining == 0)
         {
-            DestroyDeposit();
+            Destroy();
         }
         return extracted_amount;
-    }
-
-    public void DestroyDeposit()
-    {
-        return;
     }
 
     public override bool ApplyDamage(float damage)
@@ -45,11 +35,6 @@ public class RockEntity : WorldEntity, IResourceDepositEntity
     }
 
     public override bool ApplyHeal(float heal)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Destroy()
     {
         throw new System.NotImplementedException();
     }
