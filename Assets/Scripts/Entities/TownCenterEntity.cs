@@ -8,7 +8,7 @@ public class TownCenterEntity : BuildingEntity, IInventoryEntity
 
     protected Inventory Inventory { get; set; }
 
-    public TownCenterEntity(int x, int y)
+    public TownCenterEntity(RegionModel region, int x, int y) : base(region)
     {
         Position = new Vector3Int(x, y, 0);
         Health = 100;

@@ -13,11 +13,11 @@ public class PersonEntity : AgentEntity
     public int Energy { get; protected set; }
     protected Inventory Inventory { get; set; }
 
-    public PersonEntity(int x, int y)
+    public PersonEntity(RegionModel region, int x, int y) : base(region)
     {
         Position = new Vector3Int(x, y, 0);
         Inventory = new Inventory(20);
-        AgentController = new CollectWood(this);
+        AgentController = new CollectWoodAC(this);
     }
 
 
@@ -42,7 +42,6 @@ public class PersonEntity : AgentEntity
 
     override public bool Move(Vector3Int direction)
     {
-
         Position += direction;
         Monobehaviour.SetNeedsUpdate();
         return true;

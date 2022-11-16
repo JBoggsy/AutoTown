@@ -5,10 +5,24 @@
  */
 public abstract class WorldEntity
 {
+    protected RegionModel regionModel;
+    protected GameObject gameObject;
+
     protected const bool is_obstacle = true;
+
     public Vector3Int Position { get; protected set; }
     public float Health { get; protected set; }
     protected float MaxHealth { get; set; }
+
+    public WorldEntity(RegionModel region)
+    {
+        regionModel = region;
+    }
+
+    public void SetGameObject(GameObject gameObject)
+    {
+        this.gameObject = gameObject;
+    }
 
     public bool IsObstacle() { return is_obstacle; }
 

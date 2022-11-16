@@ -1,6 +1,8 @@
 //using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 
@@ -25,13 +27,14 @@ public class RegionModel
 
     public int Height { get; private set; }
     public int Width { get; private set; }
+    public RectInt RegionBox { get; private set; }
 
     // Terrain layer
     private TerrainType[,] mapData_Terrain;
 
     // Resources layer
     private int nextResourceDepositID = 0;
-    private Dictionary<Vector3Int, IResourceDepositEntity> resourceDeposits = new Dictionary<Vector3Int, IResourceDepositEntity>();
+    private Dictionary<Vector3Int, ResourceDepositEntity> resourceDeposits = new Dictionary<Vector3Int, ResourceDepositEntity>();
 
     // Persons layer
     private int nextPersonID = 0;
@@ -63,8 +66,9 @@ public class RegionModel
 
         Width = width;
         Height = height;
-
-        GenerateTerrain(seed: (int)(Random.value * int.MaxValue));
+        RegionBox = new RectInt(0, 0, Width, Height);
+        
+        GenerateTerrain(seed : (int)(UnityEngine.Random.value * int.MaxValue));
         CreatePerson(new Vector3Int(Width / 2, Height / 2, 0));
     }
 
@@ -96,7 +100,7 @@ public class RegionModel
     /// <returns></returns>
     public PersonEntity CreatePerson(Vector3Int position)
     {
-        PersonEntity newPerson = new PersonEntity(position.x, position.y);
+        PersonEntity newPerson = new PersonEntity(this, position.x, position.y);
         personLookup.Add(nextPersonID, newPerson);
         manager.SpawnPerson(newPerson, nextPersonID);
         nextPersonID++;
@@ -117,16 +121,16 @@ public class RegionModel
     /// <param name="position">The X,Y coordinate of the deposit (Z should always be 0).</param>
     /// <param name="type">The type of the deposit.</param>
     /// <returns></returns>
-    public IResourceDepositEntity CreateResourceDeposit(int amount, Vector3Int position, ResourceDepositType type)
+    public ResourceDepositEntity CreateResourceDeposit(int amount, Vector3Int position, ResourceDepositType type)
     {
-        IResourceDepositEntity newResourceDeposit;
+        ResourceDepositEntity newResourceDeposit;
         switch (type)
         {
             case ResourceDepositType.Tree:
-                newResourceDeposit = new TreeEntity(amount, position.x, position.y);
+                newResourceDeposit = new TreeEntity(this, amount, position.x, position.y);
                 break;
             case ResourceDepositType.Rock:
-                newResourceDeposit = new RockEntity(amount, position.x, position.y);
+                newResourceDeposit = new RockEntity(this, amount, position.x, position.y);
                 break;
             default:
                 return null;
@@ -138,13 +142,19 @@ public class RegionModel
         return newResourceDeposit;
     }
 
+    public void DestroyResourceDeposit(Vector3Int position)
+    {
+        resourceDeposits.Remove(position);
+        passabilityLookup[position] = true;
+    }
+
     public BuildingEntity CreateBuilding(Vector3Int position, BuildingType type)
     {
         BuildingEntity newBuilding;
         switch (type)
         {
             case BuildingType.Town_Center:
-                newBuilding = new TownCenterEntity(position.x, position.y);
+                newBuilding = new TownCenterEntity(this, position.x, position.y);
                 break;
             default:
                 return null;
@@ -169,12 +179,13 @@ public class RegionModel
         return mapData_Terrain[position.y, position.x];
     }
 
-    public IResourceDepositEntity GetResourceAt(Vector3Int position)
+    public ResourceDepositEntity GetResourceAt(Vector3Int position)
     {
-        return resourceDeposits[position];
-
+        ResourceDepositEntity ret_deposit;
+        bool success = resourceDeposits.TryGetValue(position, out ret_deposit);
+        if (success) { return ret_deposit; }
+        else { return null; }
     }
-
 
     /// <summary>
     /// Indicate whether the specified position is passable or not.
@@ -195,24 +206,33 @@ public class RegionModel
     /// <param name="depositType">Type of resource deposit to find</param>
     /// <returns>The location of the closest deposit of theg iven type if one exists, otherwise
     /// (-1, -1, -1).</returns>
-    public Vector3Int GetNearestResource(Vector3Int position, ResourceDepositType depositType)
+    public Vector3Int GetNearestResourceDeposit(Vector3Int position, ResourceDepositType depositType)
     {
-        Stack<Vector3Int> fringe = new Stack<Vector3Int>();
-        fringe.Push(position);
+        Queue<Vector3Int> fringe = new Queue<Vector3Int>();
+        HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
+        fringe.Enqueue(position);
 
         Vector3Int active_position = new Vector3Int(-1, -1, -1);
         bool resource_found = false;
         while (!resource_found && fringe.Count > 0)
         {
-            active_position = fringe.Pop();
+            active_position = fringe.Dequeue();
+            visited.Add(active_position);
+
             if (resourceDeposits.ContainsKey(active_position) && resourceDeposits[active_position].Type == depositType)
             {
                 resource_found = true;
-            } else
+            }
+            else
             {
-                foreach (Vector3Int dir in Geometry.AllDirections)
+                foreach (Vector3Int dir in Geometry.Grid.AllDirections)
                 {
-                    fringe.Push(active_position + dir);
+                    Vector3Int nbor = active_position + dir;
+                    if (RegionBox.Contains(new Vector2Int(nbor.x, nbor.y)) && !visited.Contains(nbor))
+                    {
+                        fringe.Enqueue(nbor);
+                        visited.Add(nbor);
+                    }
                 }
             }
         }
@@ -220,7 +240,6 @@ public class RegionModel
         {
             active_position = new Vector3Int(-1, -1, -1);
         }
-
         return active_position;
     }
 

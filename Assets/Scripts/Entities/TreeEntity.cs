@@ -1,42 +1,33 @@
+using System;
 using UnityEngine;
 
-public class TreeEntity : WorldEntity, IResourceDepositEntity
+public class TreeEntity : ResourceDepositEntity
 {
-    public TreeMonobehaviour Monobehaviour { protected get; set; }
-
-    public ResourceDepositType Type { get; protected set; }
-    public int AmountRemaining { get; protected set; }
-
-
-    public TreeEntity(int amount, int x, int y)
+    public TreeEntity(RegionModel region, int amount, int x, int y) : base(region)
     {
         Type = ResourceDepositType.Tree;
         AmountRemaining = amount;
         Position = new Vector3Int(x, y, 0);
     }
     
-    public int ExtractAmount(int amount)
+    public new int ExtractAmount(int amount)
     {
         int extracted_amount = 0;
-        if (amount >= AmountRemaining)
+        if (amount <= AmountRemaining)
         {
             extracted_amount = amount;
             AmountRemaining = AmountRemaining - amount;
-        } else
+        }
+        else
         {
             extracted_amount = AmountRemaining;
             AmountRemaining = 0;
         }
-        if (AmountRemaining == 0)
+        if (AmountRemaining <= 0)
         {
-            DestroyDeposit();
+            Destroy();
         }
         return extracted_amount;
-    }
-
-    public void DestroyDeposit()
-    {
-        return;
     }
 
     public override bool ApplyDamage(float damage)
@@ -45,11 +36,6 @@ public class TreeEntity : WorldEntity, IResourceDepositEntity
     }
 
     public override bool ApplyHeal(float heal)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Destroy()
     {
         throw new System.NotImplementedException();
     }

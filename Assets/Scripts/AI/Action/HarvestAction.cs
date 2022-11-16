@@ -4,23 +4,24 @@ using UnityEngine;
 
 public class HarvestAction : Action
 {
-    public new const string Name = "Harvest";
+    public Vector3Int TargetPos { get; private set; }
+    private int amount;
 
-    public Vector3Int Target { get; private set; }
-
-    public HarvestAction(AgentEntity agentEntity, Vector3Int target) : base(agentEntity)
+    public HarvestAction(AgentEntity agentEntity, Vector3Int target_pos, int amount) : base(agentEntity)
     {
-        Target = target;
+        TargetPos = target_pos;
+        this.amount = amount;
+        this.name = "Harvest";
     }
 
     public override bool ApplyAction(RegionModel regionModel)
     {
         bool result = true;
 
-        IResourceDepositEntity deposit = TownSceneManager.Instance.Region.GetResourceAt(Target);
-        if (deposit != null && Geometry.AreNeighbors(Target, AgentEntity.Position) && deposit.AmountRemaining > 0)
+        ResourceDepositEntity deposit = TownSceneManager.Instance.Region.GetResourceAt(TargetPos);
+        if (deposit != null && Geometry.Grid.AreNeighbors(TargetPos, AgentEntity.Position) && deposit.AmountRemaining > 0)
         {
-            deposit.ExtractAmount(1);
+            deposit.ExtractAmount(amount);
             ItemType item = Constants.ItemFromDeposit(deposit.Type);
             result &= AgentEntity.InsertItemIntoInventory(item);
         }
@@ -29,6 +30,8 @@ public class HarvestAction : Action
             result = false;
         }
 
+        if (result) { Status = "success"; } 
+        else { Status = "error"; }
         return result;
     }
 }
